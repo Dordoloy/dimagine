@@ -1,42 +1,47 @@
 import {StyleSheet} from 'react-native';
 
 export default StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
+  mainContainer: {
+    // flex: 1,
+    // flexDirection: 'column',
   },
-  preview: {
+  backgroundCamera: {
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
   },
   goContainer: {
     width: '100%',
     height: '100%',
-    position: 'absolute',
     backgroundColor: 'rgba(255,255,255,0.5)',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
-  goBtn: {
+  logoDimagine: {
+    width: '100%',
+    height: 150,
+    resizeMode: 'contain',
+    marginTop: 50,
+  },
+  button: {
     backgroundColor: 'white',
     padding: 20,
     borderRadius: 50,
     width: 200,
-    top: '20%',
-    left: '22%',
+    // top: '20%',
   },
-  goButtonText: {
+  buttonText: {
     color: '#ffa500',
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 20,
   },
-  titleDIM: {
-    width: 150,
-    height: 150,
-    left: '30%',
-  },
-  subTitleDIM: {
+  subTitle: {
     fontSize: 30,
-    left: '10%',
+    marginBottom: 150,
   },
 });

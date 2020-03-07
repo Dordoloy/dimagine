@@ -4,9 +4,9 @@ import React from 'react';
 import style from './style';
 
 const HomeView = ({navigation}) => (
-  <View style={style.container}>
+  <View style={style.mainContainer}>
     <RNCamera
-      style={style.preview}
+      style={style.backgroundCamera}
       type={RNCamera.Constants.Type.back}
       flashMode={RNCamera.Constants.FlashMode.on}
       androidCameraPermissionOptions={{
@@ -26,16 +26,15 @@ const HomeView = ({navigation}) => (
       }}
     />
     <View style={style.goContainer}>
-      {/*<Text style={style.titleDIM}>DIMAGINE </Text>*/}
       <Image
-        style={style.titleDIM}
+        style={style.logoDimagine}
         source={require('../../../assets/logo_haut_sans_fond.png')}
       />
-      <Text style={style.subTitleDIM}>CHASSE AU TRESOR </Text>
+      <Text style={style.subTitle}>CHASSE AU TRESOR</Text>
       <TouchableOpacity
-        style={style.goBtn}
+        style={style.button}
         onPress={() => navigation.navigate('HomeView')}>
-        <Text style={style.goButtonText}>GO</Text>
+        <Text style={style.buttonText}>GO</Text>
       </TouchableOpacity>
     </View>
   </View>

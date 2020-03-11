@@ -28,7 +28,7 @@ const HomeView = ({navigation}) => (
     <View style={style.goContainer}>
       <Image
         style={style.logoDimagine}
-        source={require('../../../assets/logo_haut_sans_fond.png')}
+        source={require('assets/images/logo_title_vertical.png')}
       />
       <Text style={style.subTitle}>CHASSE AU TRESOR</Text>
       <TouchableOpacity

@@ -5,7 +5,7 @@ import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import HomeView from './src/views/HomeView/HomeView';
+import HomeView from './views/HomeView/HomeView';
 
 const Stack = createStackNavigator();
 

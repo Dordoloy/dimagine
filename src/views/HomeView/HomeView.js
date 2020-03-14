@@ -1,27 +1,28 @@
-import {Text, TouchableOpacity, View, Image} from 'react-native';
-import {RNCamera} from 'react-native-camera';
+import { Text, TouchableOpacity, View, Image } from 'react-native';
+import { RNCamera } from 'react-native-camera';
 import React from 'react';
 import style from './style';
 
-const HomeView = ({navigation}) => (
+const HomeView = ({ navigation }) => (
+  
   <View style={style.mainContainer}>
     <RNCamera
       style={style.backgroundCamera}
       type={RNCamera.Constants.Type.back}
       flashMode={RNCamera.Constants.FlashMode.on}
       androidCameraPermissionOptions={{
-        title: 'Permission to use camera',
-        message: 'We need your permission to use your camera',
-        buttonPositive: 'Ok',
-        buttonNegative: 'Cancel',
+        title: 'Permission d\'utiliser la camera',
+        message: 'L\'application necessite l\'autorisation de la camera',
+        buttonPositive: 'Autoriser',
+        buttonNegative: 'Refuser',
       }}
       androidRecordAudioPermissionOptions={{
-        title: 'Permission to use audio recording',
-        message: 'We need your permission to use your audio',
-        buttonPositive: 'Ok',
-        buttonNegative: 'Cancel',
+        title: 'Permission d\'utiliser l\'enregistrement audio',
+        message: 'L\'application necessite l\'autorisation de l\'enregistrement audio',
+        buttonPositive: 'Autoriser',
+        buttonNegative: 'Refuser',
       }}
-      onGoogleVisionBarcodesDetected={({barcodes}) => {
+      onGoogleVisionBarcodesDetected={({ barcodes }) => {
         console.log(barcodes);
       }}
     />

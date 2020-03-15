@@ -18,6 +18,7 @@ const App: () => React$Node = () => {
         screenOptions={{
           headerShown: false,
         }}>
+        <Stack.Screen name="HomeView" component={HomeView} />
         <Stack.Screen name="InGame" component={InGame} />
       </Stack.Navigator>
     </NavigationContainer>

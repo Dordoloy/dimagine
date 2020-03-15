@@ -3,7 +3,6 @@ import { RNCamera } from 'react-native-camera';
 import React from 'react';
 import style from './style';
 
-
 class InGame extends React.Component {
 
   constructor(props) {
@@ -53,9 +52,10 @@ class InGame extends React.Component {
   }
 
   render() {
+    const { navigate } = this.props.navigation
     return (
       <View style={style.mainContainer}>
-        
+
         <RNCamera
           ref={ref => {
             this.camera = ref
@@ -80,9 +80,9 @@ class InGame extends React.Component {
         <View style={style.header}>
           <View style={style.playingHeader}>
             <TouchableOpacity
-            onPress={() => Alert.alert('End Game')}>
-			  <Image 
-              source={require('assets/images/back-button.png')}/>
+              onPress={() => navigate("HomeView")}>
+              <Image
+                source={require('assets/images/back-button.png')} />
             </TouchableOpacity>
             <View style={style.score}>
               <Text style={style.fontHeader}>SCORE</Text>
@@ -91,26 +91,26 @@ class InGame extends React.Component {
             <Text style={style.fontHeader}>30'</Text>
           </View>
           <View style={style.timerbarFull}>
-            <View  style={style.timerbar}></View>
+            <View style={style.timerbar}></View>
           </View>
         </View>
         <View style={style.playingButtons}>
           <TouchableOpacity
-		  onPress={() => Alert.alert("Indice", "Donner un indice")}>
+            onPress={() => Alert.alert("Indice", "Donner un indice")}>
             <Image
               style={style.gamingButton}
               source={require('assets/images/indice-logo.png')}
             />
           </TouchableOpacity>
           <TouchableOpacity
-		  onPress={() => Alert.alert("Scan", "Scan un objet")}>
+            onPress={() => Alert.alert("Scan", "Scan un objet")}>
             <Image
               style={[style.gamingButton, style.gamingButtonScan]}
               source={require('assets/images/scan-logo.png')}
             />
           </TouchableOpacity>
           <TouchableOpacity
-		  onPress={() => Alert.alert("Inventaire", "Ouvre l'inventaire")}>
+            onPress={() => Alert.alert("Inventaire", "Ouvre l'inventaire")}>
             <Image
               style={style.gamingButton}
               source={require('assets/images/inventory-logo.png')}

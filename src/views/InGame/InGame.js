@@ -13,6 +13,7 @@ class InGame extends React.Component {
         id = 0,
         data = "",
       ],
+      score: 0,
     }
   }
 
@@ -51,6 +52,16 @@ class InGame extends React.Component {
     );
   }
 
+  incrementScore = (value) => {
+    let newScore = this.state.score + value
+    this.setState({ score: newScore })
+  }
+
+  backToHome = () => {
+    const {navigate} = this.props.navigation
+    navigate("HomeView")
+  }
+
   render() {
     const { navigate } = this.props.navigation
     return (
@@ -80,13 +91,13 @@ class InGame extends React.Component {
         <View style={style.header}>
           <View style={style.playingHeader}>
             <TouchableOpacity
-              onPress={() => navigate("HomeView")}>
+              onPress={() => this.backToHome()}>
               <Image
                 source={require('assets/images/back-button.png')} />
             </TouchableOpacity>
             <View style={style.score}>
               <Text style={style.fontHeader}>SCORE</Text>
-              <Text style={style.fontHeader}>15</Text>
+              <Text style={style.fontHeader}>{this.state.score}</Text>
             </View>
             <Text style={style.fontHeader}>30'</Text>
           </View>
@@ -103,7 +114,7 @@ class InGame extends React.Component {
             />
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => Alert.alert("Scan", "Scan un objet")}>
+            onPress={() => [Alert.alert("Scan", "Scan un objet. Test incrémentation du score a chaque clic"), this.incrementScore(5)]}>
             <Image
               style={[style.gamingButton, style.gamingButtonScan]}
               source={require('assets/images/scan-logo.png')}

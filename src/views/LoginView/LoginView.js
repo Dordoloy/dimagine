@@ -1,4 +1,11 @@
-import {Text, Image, TextInput, TouchableOpacity, View} from 'react-native';
+import {
+  Text,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  View,
+  Alert,
+} from 'react-native';
 import React from 'react';
 import style from './style';
 import {RNCamera} from 'react-native-camera';
@@ -34,11 +41,24 @@ const LoginView = ({navigation}) => {
               onChangeText={pseudo => onChangeText(pseudo)}
               value={value}
             />
-            <TouchableOpacity
-              style={style.validateButton}
-              onPress={() => navigation.navigate('InGame')}>
-              <Text style={style.buttonText}>Valider</Text>
-            </TouchableOpacity>
+            {value !== '' ? (
+              <TouchableOpacity
+                style={style.validateButton}
+                onPress={() => navigation.navigate('InGame')}>
+                <Text style={style.buttonText}>Valider</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                // disabled={true}
+                style={[style.validateButton, style.validateButtonDisabled]}
+                onPress={() =>
+                  Alert.alert('Alerte', 'Veuillez entrer un pseudo')
+                }>
+                <Text style={[style.buttonText, style.validateButtonDisabled]}>
+                  Valider
+                </Text>
+              </TouchableOpacity>
+            )}
           </View>
           <Image
             style={style.logoDimagine}

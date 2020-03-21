@@ -84,6 +84,9 @@ export default StyleSheet.create({
 
     elevation: 4,
   },
+  validateButtonDisabled: {
+    color: 'grey',
+  },
   buttonText: {
     color: '#ffa500',
     textAlign: 'center',

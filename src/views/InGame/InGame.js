@@ -19,9 +19,9 @@ class InGame extends React.Component {
       this.setState({scanActive: 0});
       let newBarcode = [];
 
-    barcodes.forEach(barcode => {
-      newBarcode[data] = barcode.data;
-      newBarcode[id] = 5;
+      barcodes.forEach(barcode => {
+        newBarcode[data] = barcode.data;
+        newBarcode[id] = 5;
 
         console.log(newBarcode);
 
@@ -62,7 +62,7 @@ class InGame extends React.Component {
 
   backToHome = () => {
     const {navigate} = this.props.navigation;
-    navigate('HomeView');
+    navigate('LoginView');
   };
 
   render() {

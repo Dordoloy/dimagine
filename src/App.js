@@ -6,6 +6,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import HomeView from './views/HomeView/HomeView';
+import LoginView from './views/LoginView/LoginView';
 import InGame from './views/InGame/InGame';
 
 const Stack = createStackNavigator();
@@ -20,6 +21,7 @@ const App: () => React$Node = () => {
         }}>
         <Stack.Screen name="HomeView" component={HomeView} />
         <Stack.Screen name="InGame" component={InGame} />
+        <Stack.Screen name="LoginView" component={LoginView} />
       </Stack.Navigator>
     </NavigationContainer>
   );

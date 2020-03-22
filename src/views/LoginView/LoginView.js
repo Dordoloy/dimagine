@@ -49,7 +49,6 @@ const LoginView = ({navigation}) => {
               </TouchableOpacity>
             ) : (
               <TouchableOpacity
-                // disabled={true}
                 style={[style.validateButton, style.validateButtonDisabled]}
                 onPress={() =>
                   Alert.alert('Alerte', 'Veuillez entrer un pseudo')

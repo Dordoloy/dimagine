@@ -10,6 +10,7 @@ class InGame extends React.Component {
     this.state = {
       barcode: [(id = 0), (data = '')],
       scanActive: 0,
+      isObjectToScan: 0,
       score: 0,
     };
   }
@@ -53,6 +54,9 @@ class InGame extends React.Component {
 
   scanPushed = () => {
     this.setState({scanActive: 1});
+    if (this.state.isObjectToScan === 0 && this.state.scanActive === 1) {
+      Alert.alert('Rien à scanner ici !');
+    }
   };
 
   incrementScore = value => {

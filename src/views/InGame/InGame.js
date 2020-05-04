@@ -2,6 +2,8 @@ import {Text, TouchableOpacity, View, Image, Alert} from 'react-native';
 import {RNCamera} from 'react-native-camera';
 import React from 'react';
 import style from './style';
+import Modal from 'react-native-modal';
+import CustomAlertComponent from '../../components/CustomAlertComponent/CustomAlertComponent';
 
 class InGame extends React.Component {
   constructor(props) {
@@ -12,8 +14,15 @@ class InGame extends React.Component {
       scanActive: 0,
       isObjectToScan: 0,
       score: 0,
+      visible: false,
+      image: '',
+      massage: '',
     };
   }
+
+  open = () => this.setState({visible: true});
+  close = () => this.setState({visible: false});
+  isVisible = () => this.state.visible;
 
   barcodeRecognized = ({barcodes}) => {
     if (this.state.scanActive === 1) {
@@ -32,23 +41,18 @@ class InGame extends React.Component {
         // TODO : Send the tag informations to the websocket and display the received information
       });
 
-      Alert.alert(
-        'Composant trouvé !',
-        newBarcode[data],
-        [
-          {
-            text: 'Fermer',
-            onPress: () => console.log('Non ajouté'),
-            style: 'cancel',
-          },
-          {
-            text: "Ajouter à l'inventaire",
-            onPress: () => console.log("Item ajouté dans l'inventaire"),
-            // TODO : Add item in inventory
-          },
-        ],
-        {cancelable: false},
+      const messageName = ['Carte mere', 'Carte graphique'];
+      const resultMessageName = messageName.find(
+        element => `http://${element}` === newBarcode[data],
       );
+      const resultImageName = resultMessageName.toLowerCase();
+      if (
+        messageName.find(element => `http://${element}` === newBarcode[data])
+      ) {
+        this.open();
+        this.state.message = resultMessageName;
+        this.state.image = resultImageName.replace(/\s/g, '-');
+      }
     }
   };
 
@@ -131,6 +135,15 @@ class InGame extends React.Component {
               source={require('assets/images/scan-logo.png')}
             />
           </TouchableOpacity>
+          {this.state.visible && (
+            <Modal testID={'modal'} isVisible={this.state.visible}>
+              <CustomAlertComponent
+                onPress={this.close}
+                image={this.state.image}
+                message={this.state.message}
+              />
+            </Modal>
+          )}
           <TouchableOpacity
             onPress={() => Alert.alert('Inventaire', "Ouvre l'inventaire")}>
             <Image

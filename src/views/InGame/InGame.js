@@ -45,13 +45,16 @@ class InGame extends React.Component {
       const resultMessageName = messageName.find(
         element => `http://${element}` === newBarcode[data],
       );
-      const resultImageName = resultMessageName.toLowerCase();
+      const resultImageName = resultMessageName?.toLowerCase();
       if (
+        messageName &&
         messageName.find(element => `http://${element}` === newBarcode[data])
       ) {
         this.open();
         this.state.message = resultMessageName;
         this.state.image = resultImageName.replace(/\s/g, '-');
+      } else {
+        Alert.alert('Rien à scanner ici !');
       }
     }
   };

@@ -20,6 +20,19 @@ class InGame extends React.Component {
     };
   }
 
+  componentDidMount() {
+    // var socket = new WebSocket('wss://echo.websocket.org/'); // test de connexion
+    var socket = new WebSocket('ws://ad109ac7.ngrok.io/:8080');
+
+    socket.onopen = () => socket.send('Connexion OK');
+
+    socket.onmessage = ({data}) => {
+      console.log(data);
+
+      //   this.setState({echo: data});
+    };
+  }
+
   open = () => this.setState({visible: true});
   close = () => this.setState({visible: false});
   isVisible = () => this.state.visible;
@@ -57,10 +70,10 @@ class InGame extends React.Component {
   };
 
   scanPushed = () => {
-    this.setState({scanActive: 1});
-    if (this.state.isObjectToScan === 0 && this.state.scanActive === 1) {
-      Alert.alert('Rien à scanner ici !');
-    }
+    // this.setState({scanActive: 1});
+    // if (this.state.isObjectToScan === 0 && this.state.scanActive === 1) {
+    //   Alert.alert('Rien à scanner ici !');
+    // }
   };
 
   incrementScore = value => {

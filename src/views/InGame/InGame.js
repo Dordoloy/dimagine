@@ -73,10 +73,10 @@ class InGame extends React.Component {
   };
 
   scanPushed = () => {
-    // this.setState({scanActive: 1});
-    // if (this.state.isObjectToScan === 0 && this.state.scanActive === 1) {
-    //   Alert.alert('Rien à scanner ici !');
-    // }
+    this.setState({scanActive: 1});
+    if (this.state.isObjectToScan === 0 && this.state.scanActive === 1) {
+      Alert.alert('Rien à scanner ici !');
+    }
   };
 
   incrementScore = value => {

@@ -3,7 +3,7 @@ import {RNCamera} from 'react-native-camera';
 import React from 'react';
 import style from './style';
 import Modal from 'react-native-modal';
-import CustomAlertComponent from '../../components/CustomAlertComponent/CustomAlertComponent';
+import ScanModal from '../../components/scanModal/scanModal';
 
 class InGame extends React.Component {
   constructor(props) {
@@ -153,7 +153,7 @@ class InGame extends React.Component {
           </TouchableOpacity>
           {this.state.visible && (
             <Modal testID={'modal'} isVisible={this.state.visible}>
-              <CustomAlertComponent
+              <ScanModal
                 onPress={this.close}
                 image={this.state.image}
                 message={this.state.message}

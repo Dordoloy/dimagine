@@ -3,7 +3,8 @@ import {RNCamera} from 'react-native-camera';
 import React from 'react';
 import style from './style';
 import Modal from 'react-native-modal';
-import ScanModal from '../../components/scanModal/scanModal';
+import ScanModal from '../../components/ScanModal/ScanModal';
+import ClueModal from '../../components/ClueModal/ClueModal';
 
 class InGame extends React.Component {
   constructor(props) {
@@ -14,6 +15,10 @@ class InGame extends React.Component {
       scanActive: 0,
       isObjectToScan: 0,
       score: 0,
+      clue: false,
+      clueTitle: '',
+      clueMessage: '',
+      clueImage: '',
       visible: false,
       image: '',
       massage: '',
@@ -36,6 +41,31 @@ class InGame extends React.Component {
   open = () => this.setState({visible: true});
   close = () => this.setState({visible: false});
   isVisible = () => this.state.visible;
+
+  openClue = () => {
+    const clueTypeList = ['object', 'position'];
+    const clueType = clueTypeList[Math.floor(Math.random() * 2)];
+    const clueMessageListObject = [
+      "Indice sur l'objet carte mère",
+      "Indice sur l'objet carte graphique",
+    ];
+    const clueMessageListPosition = [
+      'Indice sur la position de la carte mère',
+      'Indice sur la position de la carte graphique',
+    ];
+    this.setState({
+      clue: true,
+      clueTitle:
+        clueType === 'object' ? "Indice sur l'objet" : 'indice sur la position',
+      clueMessage:
+        clueType === 'object'
+          ? clueMessageListObject[Math.floor(Math.random() * 2)]
+          : clueMessageListPosition[Math.floor(Math.random() * 2)],
+      clueImage: clueType === 'object' ? 'object-logo' : 'position-logo',
+    });
+  };
+  closeClue = () => this.setState({clue: false});
+  isVisibleClue = () => this.state.clue;
 
   barcodeRecognized = ({barcodes}) => {
     if (this.state.scanActive === 1) {
@@ -130,13 +160,22 @@ class InGame extends React.Component {
           </View>
         </View>
         <View style={style.playingButtons}>
-          <TouchableOpacity
-            onPress={() => Alert.alert('Indice', 'Donner un indice')}>
+          <TouchableOpacity onPress={() => this.openClue()}>
             <Image
               style={style.gamingButton}
               source={require('assets/images/indice-logo.png')}
             />
           </TouchableOpacity>
+          {this.state.clue && (
+            <Modal testID={'modal'} isVisible={this.state.clue}>
+              <ClueModal
+                onPress={this.closeClue}
+                title={this.state.clueTitle}
+                message={this.state.clueMessage}
+                image={this.state.clueImage}
+              />
+            </Modal>
+          )}
           <TouchableOpacity
             onPress={() => [
               // Alert.alert(

@@ -8,7 +8,7 @@ type Props = {
   message: string,
 };
 
-const CustomAlertComponent: React.FC<Props> = props => (
+const ScanModal: React.FC<Props> = props => (
   <View style={style.content}>
     <Text style={style.contentTitle}>Composant trouvé !</Text>
     <Text>{props.message}</Text>
@@ -40,4 +40,4 @@ const CustomAlertComponent: React.FC<Props> = props => (
   </View>
 );
 
-export default CustomAlertComponent;
+export default ScanModal;

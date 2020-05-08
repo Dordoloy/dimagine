@@ -3,7 +3,8 @@ import {RNCamera} from 'react-native-camera';
 import React from 'react';
 import style from './style';
 import Modal from 'react-native-modal';
-import CustomAlertComponent from '../../components/CustomAlertComponent/CustomAlertComponent';
+import ScanModal from '../../components/ScanModal/ScanModal';
+import ClueModal from '../../components/ClueModal/ClueModal';
 
 class InGame extends React.Component {
   constructor(props) {
@@ -14,6 +15,10 @@ class InGame extends React.Component {
       scanActive: 0,
       isObjectToScan: 0,
       score: 0,
+      clue: false,
+      clueTitle: '',
+      clueMessage: '',
+      clueImage: '',
       visible: false,
       image: '',
       massage: '',
@@ -37,6 +42,31 @@ class InGame extends React.Component {
   close = () => this.setState({visible: false});
   isVisible = () => this.state.visible;
 
+  openClue = () => {
+    const clueTypeList = ['object', 'position'];
+    const clueType = clueTypeList[Math.floor(Math.random() * 2)];
+    const clueMessageListObject = [
+      "Indice sur l'objet carte mère",
+      "Indice sur l'objet carte graphique",
+    ];
+    const clueMessageListPosition = [
+      'Indice sur la position de la carte mère',
+      'Indice sur la position de la carte graphique',
+    ];
+    this.setState({
+      clue: true,
+      clueTitle:
+        clueType === 'object' ? "Indice sur l'objet" : 'indice sur la position',
+      clueMessage:
+        clueType === 'object'
+          ? clueMessageListObject[Math.floor(Math.random() * 2)]
+          : clueMessageListPosition[Math.floor(Math.random() * 2)],
+      clueImage: clueType === 'object' ? 'object-logo' : 'position-logo',
+    });
+  };
+  closeClue = () => this.setState({clue: false});
+  isVisibleClue = () => this.state.clue;
+
   barcodeRecognized = ({barcodes}) => {
     if (this.state.scanActive === 1) {
       this.setState({scanActive: 0});
@@ -58,13 +88,16 @@ class InGame extends React.Component {
       const resultMessageName = messageName.find(
         element => `http://${element}` === newBarcode[data],
       );
-      const resultImageName = resultMessageName.toLowerCase();
+      const resultImageName = resultMessageName?.toLowerCase();
       if (
+        messageName &&
         messageName.find(element => `http://${element}` === newBarcode[data])
       ) {
         this.open();
         this.state.message = resultMessageName;
         this.state.image = resultImageName.replace(/\s/g, '-');
+      } else {
+        Alert.alert('Rien à scanner ici !');
       }
     }
   };
@@ -127,13 +160,22 @@ class InGame extends React.Component {
           </View>
         </View>
         <View style={style.playingButtons}>
-          <TouchableOpacity
-            onPress={() => Alert.alert('Indice', 'Donner un indice')}>
+          <TouchableOpacity onPress={() => this.openClue()}>
             <Image
               style={style.gamingButton}
               source={require('assets/images/indice-logo.png')}
             />
           </TouchableOpacity>
+          {this.state.clue && (
+            <Modal testID={'modal'} isVisible={this.state.clue}>
+              <ClueModal
+                onPress={this.closeClue}
+                title={this.state.clueTitle}
+                message={this.state.clueMessage}
+                image={this.state.clueImage}
+              />
+            </Modal>
+          )}
           <TouchableOpacity
             onPress={() => [
               // Alert.alert(
@@ -150,7 +192,7 @@ class InGame extends React.Component {
           </TouchableOpacity>
           {this.state.visible && (
             <Modal testID={'modal'} isVisible={this.state.visible}>
-              <CustomAlertComponent
+              <ScanModal
                 onPress={this.close}
                 image={this.state.image}
                 message={this.state.message}

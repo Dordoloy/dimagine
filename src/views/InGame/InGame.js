@@ -26,10 +26,17 @@ class InGame extends React.Component {
   }
 
   componentDidMount() {
-    // var socket = new WebSocket('wss://echo.websocket.org/'); // test de connexion
-    var socket = new WebSocket('ws://ad109ac7.ngrok.io/:8080');
+    var socket = new WebSocket('wss://echo.websocket.org/'); // test de connexion
 
-    socket.onopen = () => socket.send('Connexion OK');
+    // Change the websocket address with your ngrok link bellow
+    // var socket = new WebSocket('ws://933674d3.ngrok.io/:8080');
+
+    var sendMessage = {command: 'message', message: 'Coucou ca va ?'};
+    var subscribeRoom = {command: 'subscribe', channel: 'NewRoom'};
+    var unsubscribeRoom = {command: 'unsubscribe', channel: 'Romain'};
+    var getList = {command: 'list'};
+
+    socket.onopen = () => socket.send(JSON.stringify(sendMessage));
 
     socket.onmessage = ({data}) => {
       console.log(data);

@@ -67,6 +67,12 @@ export default StyleSheet.create({
     fontWeight: 'bold',
   },
   score: {
+    position: 'absolute',
+    top: 8,
+    left: 0,
+    right: 0,
+    marginLeft: 'auto',
+    marginRight: 'auto',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -88,7 +94,7 @@ export default StyleSheet.create({
     left: 0,
     backgroundColor: '#FF901D',
     height: '100%',
-    width: '70%',
+    // width: '100%',
   },
   playingButtons: {
     position: 'absolute',

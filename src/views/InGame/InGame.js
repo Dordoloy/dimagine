@@ -6,6 +6,8 @@ import Modal from 'react-native-modal';
 import ScanModal from '../../components/ScanModal/ScanModal';
 import ClueModal from '../../components/ClueModal/ClueModal';
 
+const TIMER_BASE = 300;
+
 class InGame extends React.Component {
   constructor(props) {
     super(props);
@@ -22,6 +24,7 @@ class InGame extends React.Component {
       visible: false,
       image: '',
       massage: '',
+      timer: TIMER_BASE,
     };
   }
 
@@ -31,18 +34,20 @@ class InGame extends React.Component {
     // Change the websocket address with your ngrok link bellow
     // var socket = new WebSocket('ws://933674d3.ngrok.io/:8080');
 
-    var sendMessage = {command: 'message', message: 'Coucou ca va ?'};
-    var subscribeRoom = {command: 'subscribe', channel: 'NewRoom'};
-    var unsubscribeRoom = {command: 'unsubscribe', channel: 'Romain'};
-    var getList = {command: 'list'};
+    let sendMessage = {command: 'message', message: 'Coucou ca va ?'};
+    let subscribeRoom = {command: 'subscribe', channel: 'NewRoom'};
+    let unsubscribeRoom = {command: 'unsubscribe', channel: 'RomainRoom'};
+    let getList = {command: 'list'};
 
     socket.onopen = () => socket.send(JSON.stringify(sendMessage));
 
     socket.onmessage = ({data}) => {
       console.log(data);
 
-      //   this.setState({echo: data});
+      // this.setState({echo: data});
     };
+
+    this.startTimer();
   }
 
   open = () => this.setState({visible: true});
@@ -73,6 +78,38 @@ class InGame extends React.Component {
   };
   closeClue = () => this.setState({clue: false});
   isVisibleClue = () => this.state.clue;
+
+  startTimer = () => {
+    setInterval(() => {
+      if (!this.state.timer <= 0) {
+        this.setState({timer: this.state.timer - 1});
+      }
+    }, 1000);
+  };
+
+  timerToTime = () => {
+    // return this.state.timer;
+    let minutes = 0;
+    let seconds = 0;
+    let timerState = this.state.timer;
+    minutes = parseInt(timerState / 60, 10);
+    seconds = parseInt(timerState % 60, 10);
+
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    seconds = seconds < 10 ? '0' + seconds : seconds;
+
+    let time = minutes + ':' + seconds;
+    return time;
+  };
+
+  updateTimerBar = () => {
+    // return this.state.timer;
+
+    // setInterval(() => {
+    let newWidthTimerBar = (this.state.timer / TIMER_BASE) * 100 + '%';
+    return newWidthTimerBar;
+    // }, 1000);
+  };
 
   barcodeRecognized = ({barcodes}) => {
     if (this.state.scanActive === 1) {
@@ -160,10 +197,10 @@ class InGame extends React.Component {
               <Text style={style.fontHeader}>SCORE</Text>
               <Text style={style.fontHeader}>{this.state.score}</Text>
             </View>
-            <Text style={style.fontHeader}>30'</Text>
+            <Text style={style.fontHeader}>{this.timerToTime()}</Text>
           </View>
           <View style={style.timerbarFull}>
-            <View style={style.timerbar} />
+            <View style={[style.timerbar, {width: this.updateTimerBar()}]} />
           </View>
         </View>
         <View style={style.playingButtons}>

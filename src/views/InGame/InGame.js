@@ -5,6 +5,7 @@ import style from './style';
 import Modal from 'react-native-modal';
 import ScanModal from '../../components/ScanModal/ScanModal';
 import ClueModal from '../../components/ClueModal/ClueModal';
+import InventoryModal from '../../components/InventoryModal/InventoryModal';
 import Timer from '../../components/Timer/Timer';
 
 const TIMER_BASE = 300;
@@ -24,6 +25,8 @@ class InGame extends React.Component {
       clueTitle: '',
       clueMessage: '',
       clueImage: '',
+      inventory: false,
+      inventoryImages: [],
       scanVisible: false,
       scanImage: '',
       scanMessage: '',
@@ -59,9 +62,13 @@ class InGame extends React.Component {
     };
   }
 
-  open = () => this.setState({scanVisible: true});
-  close = () => this.setState({scanVisible: false});
-  isVisible = () => this.state.scanVisible;
+  openScan = () => this.setState({scanVisible: true});
+  closeScan = () => this.setState({scanVisible: false});
+  isVisibleScan = () => this.state.scanVisible;
+
+  openInventory = () => this.setState({inventory: true});
+  closeInventory = () => this.setState({inventory: false});
+  isVisibleInventory = () => this.state.inventory;
 
   openClue = () => {
     const clueTypeList = ['object', 'position'];
@@ -84,6 +91,7 @@ class InGame extends React.Component {
           : clueMessageListPosition[Math.floor(Math.random() * 2)],
       clueImage: clueType === 'object' ? 'object-logo' : 'position-logo',
     });
+    this.state.score -= 10;
   };
   closeClue = () => this.setState({clue: false});
   isVisibleClue = () => this.state.clue;
@@ -114,7 +122,7 @@ class InGame extends React.Component {
         messageName &&
         messageName.find(element => `http://${element}` === newBarcode[data])
       ) {
-        this.open();
+        this.openScan();
         this.state.scanMessage = resultMessageName;
         this.state.scanImage = resultImageName.replace(/\s/g, '-');
       } else {
@@ -201,7 +209,7 @@ class InGame extends React.Component {
               //   'Scan',
               //   'Scan un objet. Test incrémentation du score a chaque clic',
               // ),
-              this.incrementScore(5),
+              this.incrementScore(50),
               this.scanPushed(),
             ]}>
             <Image
@@ -212,19 +220,23 @@ class InGame extends React.Component {
           {this.state.scanVisible && (
             <Modal testID={'modal'} isVisible={this.state.scanVisible}>
               <ScanModal
-                onPress={this.close}
+                onPress={this.closeScan}
                 image={this.state.scanImage}
                 message={this.state.scanMessage}
               />
             </Modal>
           )}
-          <TouchableOpacity
-            onPress={() => Alert.alert('Inventaire', "Ouvre l'inventaire")}>
+          <TouchableOpacity onPress={() => this.openInventory()}>
             <Image
               style={style.gamingButton}
               source={require('assets/images/inventory-logo.png')}
             />
           </TouchableOpacity>
+          {this.state.inventory && (
+            <Modal testID={'modal'} isVisible={this.state.inventory}>
+              <InventoryModal onPress={this.closeInventory} />
+            </Modal>
+          )}
         </View>
       </View>
     );

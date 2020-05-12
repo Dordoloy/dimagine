@@ -148,6 +148,23 @@ class InGame extends React.Component {
     navigate('LoginView');
   };
 
+  addToInventory() {
+    return () => {
+      if (
+        this.state.inventoryImages.find(
+          element => element === this.state.scanImage,
+        ) === undefined
+      ) {
+        this.state.inventoryImages.push(this.state.scanImage);
+        this.closeScan();
+      } else {
+        // Alert.alert('', 'Vous possédez déjà cet objet !');
+        this.state.inventoryImages.push(this.state.scanImage);
+        this.closeScan();
+      }
+    };
+  }
+
   render() {
     return (
       <View style={style.mainContainer}>
@@ -221,6 +238,7 @@ class InGame extends React.Component {
             <Modal testID={'modal'} isVisible={this.state.scanVisible}>
               <ScanModal
                 onPress={this.closeScan}
+                onKeep={this.addToInventory()}
                 image={this.state.scanImage}
                 message={this.state.scanMessage}
               />
@@ -234,7 +252,10 @@ class InGame extends React.Component {
           </TouchableOpacity>
           {this.state.inventory && (
             <Modal testID={'modal'} isVisible={this.state.inventory}>
-              <InventoryModal onPress={this.closeInventory} />
+              <InventoryModal
+                onPress={this.closeInventory}
+                images={this.state.inventoryImages}
+              />
             </Modal>
           )}
         </View>

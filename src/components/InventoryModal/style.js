@@ -10,10 +10,17 @@ export default StyleSheet.create({
   content: {
     backgroundColor: 'white',
     padding: 22,
-    alignItems: 'center',
     borderRadius: 4,
     borderColor: 'rgba(0, 0, 0, 0.1)',
     height: '100%',
     width: '100%',
+  },
+  inventoryCase: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  crossObject: {
+    fontSize: 30,
+    color: 'red',
   },
 });

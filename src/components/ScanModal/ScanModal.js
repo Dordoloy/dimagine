@@ -4,6 +4,7 @@ import style from './style';
 
 type Props = {
   onPress: () => any,
+  onKeep: () => any,
   image: string,
   message: string,
 };
@@ -22,18 +23,17 @@ const ScanModal: React.FC<Props> = props => (
     />
     <View style={style.buttonsContainer}>
       <TouchableOpacity
-        testID={'close-button'}
+        id={'throw-button'}
         onPress={props.onPress}
         title="Close"
         style={style.buttons}>
         <Text>Jeter</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        testID={'close-button'}
-        onPress={props.onPress}
+        id={'keep-button'}
+        onPress={props.onKeep}
         title="Close"
         style={style.buttons}>
-        {/*// TODO : Add item in inventory*/}
         <Text>Garder</Text>
       </TouchableOpacity>
     </View>

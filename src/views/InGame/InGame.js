@@ -5,10 +5,11 @@ import style from './style';
 import Modal from 'react-native-modal';
 import ScanModal from '../../components/ScanModal/ScanModal';
 import ClueModal from '../../components/ClueModal/ClueModal';
-// import Timer from '_components';
+import InventoryModal from '../../components/InventoryModal/InventoryModal';
 import Timer from '../../components/Timer/Timer';
 
 const TIMER_BASE = 300;
+
 class InGame extends React.Component {
   constructor(props) {
     super(props);
@@ -24,10 +25,12 @@ class InGame extends React.Component {
       clueTitle: '',
       clueMessage: '',
       clueImage: '',
-      visible: false,
-      image: '',
-      massage: '',
-      timer: '5:00',
+      inventory: false,
+      inventoryImages: [],
+      scanVisible: false,
+      scanImage: '',
+      scanMessage: '',
+      timer: TIMER_BASE,
     };
   }
 
@@ -59,9 +62,13 @@ class InGame extends React.Component {
     };
   }
 
-  open = () => this.setState({visible: true});
-  close = () => this.setState({visible: false});
-  isVisible = () => this.state.visible;
+  openScan = () => this.setState({scanVisible: true});
+  closeScan = () => this.setState({scanVisible: false});
+  isVisibleScan = () => this.state.scanVisible;
+
+  openInventory = () => this.setState({inventory: true});
+  closeInventory = () => this.setState({inventory: false});
+  isVisibleInventory = () => this.state.inventory;
 
   openClue = () => {
     const clueTypeList = ['object', 'position'];
@@ -84,6 +91,7 @@ class InGame extends React.Component {
           : clueMessageListPosition[Math.floor(Math.random() * 2)],
       clueImage: clueType === 'object' ? 'object-logo' : 'position-logo',
     });
+    this.state.score -= 10;
   };
   closeClue = () => this.setState({clue: false});
   isVisibleClue = () => this.state.clue;
@@ -114,9 +122,9 @@ class InGame extends React.Component {
         messageName &&
         messageName.find(element => `http://${element}` === newBarcode[data])
       ) {
-        this.open();
-        this.state.message = resultMessageName;
-        this.state.image = resultImageName.replace(/\s/g, '-');
+        this.openScan();
+        this.state.scanMessage = resultMessageName;
+        this.state.scanImage = resultImageName.replace(/\s/g, '-');
       } else {
         Alert.alert('Rien à scanner ici !');
       }
@@ -124,10 +132,10 @@ class InGame extends React.Component {
   };
 
   scanPushed = () => {
-    // this.setState({scanActive: 1});
-    // if (this.state.isObjectToScan === 0 && this.state.scanActive === 1) {
-    //   Alert.alert('Rien à scanner ici !');
-    // }
+    this.setState({scanActive: 1});
+    if (this.state.isObjectToScan === 0 && this.state.scanActive === 1) {
+      Alert.alert('Rien à scanner ici !');
+    }
   };
 
   incrementScore = value => {
@@ -140,11 +148,20 @@ class InGame extends React.Component {
     navigate('LoginView');
   };
 
-  // checkTimer = () => {
-  //   setTimeout(() => {
-
-  //   }, 1000);
-  // };
+  addToInventory() {
+    return () => {
+      if (
+        this.state.inventoryImages.find(
+          element => element === this.state.scanImage,
+        ) === undefined
+      ) {
+        this.state.inventoryImages.push(this.state.scanImage);
+        this.closeScan();
+      } else {
+        Alert.alert('', 'Vous possédez déjà cet objet !');
+      }
+    };
+  }
 
   render() {
     return (
@@ -202,35 +219,36 @@ class InGame extends React.Component {
             </Modal>
           )}
           <TouchableOpacity
-            onPress={() => [
-              // Alert.alert(
-              //   'Scan',
-              //   'Scan un objet. Test incrémentation du score a chaque clic',
-              // ),
-              this.incrementScore(5),
-              this.scanPushed(),
-            ]}>
+            onPress={() => [this.incrementScore(50), this.scanPushed()]}>
             <Image
               style={[style.gamingButton, style.gamingButtonScan]}
               source={require('assets/images/scan-logo.png')}
             />
           </TouchableOpacity>
-          {this.state.visible && (
-            <Modal testID={'modal'} isVisible={this.state.visible}>
+          {this.state.scanVisible && (
+            <Modal testID={'modal'} isVisible={this.state.scanVisible}>
               <ScanModal
-                onPress={this.close}
-                image={this.state.image}
-                message={this.state.message}
+                onPress={this.closeScan}
+                onKeep={this.addToInventory()}
+                image={this.state.scanImage}
+                message={this.state.scanMessage}
               />
             </Modal>
           )}
-          <TouchableOpacity
-            onPress={() => Alert.alert('Inventaire', "Ouvre l'inventaire")}>
+          <TouchableOpacity onPress={() => this.openInventory()}>
             <Image
               style={style.gamingButton}
               source={require('assets/images/inventory-logo.png')}
             />
           </TouchableOpacity>
+          {this.state.inventory && (
+            <Modal testID={'modal'} isVisible={this.state.inventory}>
+              <InventoryModal
+                onPress={this.closeInventory}
+                images={this.state.inventoryImages}
+              />
+            </Modal>
+          )}
         </View>
       </View>
     );

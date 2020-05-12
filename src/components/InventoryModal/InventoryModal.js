@@ -16,12 +16,13 @@ const InventoryModal: React.FC<Props> = props => (
       <Text style={style.cross}>X</Text>
     </TouchableOpacity>
     {props.images.map((element, key) => {
-      console.log(key);
       return (
         <View style={style.inventoryCase}>
           <TouchableOpacity
             testID={'close-button'}
-            onPress={props.onPress}
+            onPress={() => {
+              props.images.splice(key, 1);
+            }}
             title="Close">
             <Text style={style.crossObject}>X</Text>
           </TouchableOpacity>

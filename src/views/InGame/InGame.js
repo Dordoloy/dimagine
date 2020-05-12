@@ -158,9 +158,7 @@ class InGame extends React.Component {
         this.state.inventoryImages.push(this.state.scanImage);
         this.closeScan();
       } else {
-        // Alert.alert('', 'Vous possédez déjà cet objet !');
-        this.state.inventoryImages.push(this.state.scanImage);
-        this.closeScan();
+        Alert.alert('', 'Vous possédez déjà cet objet !');
       }
     };
   }
@@ -221,14 +219,7 @@ class InGame extends React.Component {
             </Modal>
           )}
           <TouchableOpacity
-            onPress={() => [
-              // Alert.alert(
-              //   'Scan',
-              //   'Scan un objet. Test incrémentation du score a chaque clic',
-              // ),
-              this.incrementScore(50),
-              this.scanPushed(),
-            ]}>
+            onPress={() => [this.incrementScore(50), this.scanPushed()]}>
             <Image
               style={[style.gamingButton, style.gamingButtonScan]}
               source={require('assets/images/scan-logo.png')}

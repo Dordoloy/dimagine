@@ -15,6 +15,7 @@ const InventoryModal: React.FC<Props> = props => (
       title="Close">
       <Text style={style.cross}>X</Text>
     </TouchableOpacity>
+    <Text style={style.contentTitle}>Inventaire</Text>
     {props.images.map((element, key) => {
       return (
         <View style={style.inventoryCase}>

@@ -15,6 +15,17 @@ export default StyleSheet.create({
     height: '100%',
     width: '100%',
   },
+  contentTitle: {
+    width: '100%',
+    padding: 10,
+    textAlign: 'center',
+    fontSize: 20,
+    marginTop: -20,
+    marginBottom: 12,
+    color: 'orange',
+    borderBottomColor: 'black',
+    borderBottomWidth: 2,
+  },
   inventoryCase: {
     flex: 1,
     flexDirection: 'row',

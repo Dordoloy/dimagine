@@ -8,12 +8,11 @@ import ClueModal from '../../components/ClueModal/ClueModal';
 import InventoryModal from '../../components/InventoryModal/InventoryModal';
 import Timer from '../../components/Timer/Timer';
 
-const TIMER_BASE = 300;
+const TIMER_BASE = 5;
 
 class InGame extends React.Component {
   constructor(props) {
     super(props);
-
     this.timerRef = React.createRef();
 
     this.state = {
@@ -35,9 +34,13 @@ class InGame extends React.Component {
   }
 
   componentDidMount() {
+    const {navigate} = this.props.navigation;
     setInterval(() => {
       if (this.timerRef.current) {
         this.setState({timer: this.timerRef.current.timerToTime()});
+        if (this.state.timer === '00:00') {
+          navigate('DefeatView');
+        }
       }
     }, 1001);
 

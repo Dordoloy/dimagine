@@ -15,7 +15,6 @@ class LoginView extends React.Component {
   constructor(props) {
     super(props);
   }
-
   togglePseudo = pseudo => {
     const action = {type: 'USER_PSEUDO', value: pseudo};
     this.props.dispatch(action);

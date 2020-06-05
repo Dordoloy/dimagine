@@ -8,7 +8,7 @@ import ClueModal from '../../components/ClueModal/ClueModal';
 import InventoryModal from '../../components/InventoryModal/InventoryModal';
 import Timer from '../../components/Timer/Timer';
 
-const TIMER_BASE = 5;
+const TIMER_BASE = 2;
 
 class InGame extends React.Component {
   constructor(props) {
@@ -159,6 +159,7 @@ class InGame extends React.Component {
         ) === undefined
       ) {
         this.state.inventoryImages.push(this.state.scanImage);
+        this.incrementScore(50);
         this.closeScan();
       } else {
         Alert.alert('', 'Vous possédez déjà cet objet !');
@@ -221,8 +222,7 @@ class InGame extends React.Component {
               />
             </Modal>
           )}
-          <TouchableOpacity
-            onPress={() => [this.incrementScore(50), this.scanPushed()]}>
+          <TouchableOpacity onPress={() => this.scanPushed()}>
             <Image
               style={[style.gamingButton, style.gamingButtonScan]}
               source={require('assets/images/scan-logo.png')}

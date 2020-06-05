@@ -7,8 +7,9 @@ import ScanModal from '../../components/ScanModal/ScanModal';
 import ClueModal from '../../components/ClueModal/ClueModal';
 import InventoryModal from '../../components/InventoryModal/InventoryModal';
 import Timer from '../../components/Timer/Timer';
+import {connect} from 'react-redux';
 
-const TIMER_BASE = 5;
+const TIMER_BASE = 10;
 
 class InGame extends React.Component {
   constructor(props) {
@@ -20,6 +21,8 @@ class InGame extends React.Component {
       scanActive: 0,
       isObjectToScan: 0,
       score: 0,
+      increaseScore: 0,
+      decreaseScore: 0,
       clue: false,
       clueTitle: '',
       clueMessage: '',
@@ -95,6 +98,14 @@ class InGame extends React.Component {
       clueImage: clueType === 'object' ? 'object-logo' : 'position-logo',
     });
     this.state.score -= 10;
+    this.state.decreaseScore -= 10;
+    const actionScore = {type: 'SCORE', value: this.state.score};
+    const actionDecreaseScore = {
+      type: 'DECREASE_SCORE',
+      value: this.state.decreaseScore,
+    };
+    this.props.dispatch(actionScore);
+    this.props.dispatch(actionDecreaseScore);
   };
   closeClue = () => this.setState({clue: false});
   isVisibleClue = () => this.state.clue;
@@ -143,6 +154,14 @@ class InGame extends React.Component {
 
   incrementScore = value => {
     let newScore = this.state.score + value;
+    this.state.increaseScore += value;
+    const actionScore = {type: 'SCORE', value: newScore};
+    const actionIncreaseScore = {
+      type: 'INCREASE_SCORE',
+      value: this.state.increaseScore,
+    };
+    this.props.dispatch(actionScore);
+    this.props.dispatch(actionIncreaseScore);
     this.setState({score: newScore});
   };
 
@@ -159,6 +178,7 @@ class InGame extends React.Component {
         ) === undefined
       ) {
         this.state.inventoryImages.push(this.state.scanImage);
+        this.incrementScore(50);
         this.closeScan();
       } else {
         Alert.alert('', 'Vous possédez déjà cet objet !');
@@ -221,8 +241,7 @@ class InGame extends React.Component {
               />
             </Modal>
           )}
-          <TouchableOpacity
-            onPress={() => [this.incrementScore(50), this.scanPushed()]}>
+          <TouchableOpacity onPress={() => this.scanPushed()}>
             <Image
               style={[style.gamingButton, style.gamingButtonScan]}
               source={require('assets/images/scan-logo.png')}
@@ -257,5 +276,23 @@ class InGame extends React.Component {
     );
   }
 }
+const mapStateToProps = state => {
+  return {
+    score: state.score,
+    increaseScore: state.increaseScore,
+    decreaseScore: state.decreaseScore,
+  };
+};
 
-export default InGame;
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatch: action => {
+      dispatch(action);
+    },
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(InGame);

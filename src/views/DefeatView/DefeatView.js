@@ -1,8 +1,9 @@
-import {Alert, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import style from './style';
 import {RNCamera} from 'react-native-camera';
 import Timer from '../../components/Timer/Timer';
+import {connect} from 'react-redux';
 
 class DefeatView extends React.Component {
   constructor(props) {
@@ -10,7 +11,6 @@ class DefeatView extends React.Component {
   }
   render() {
     const {navigate} = this.props.navigation;
-
     return (
       <View style={style.mainContainer}>
         <RNCamera
@@ -30,9 +30,13 @@ class DefeatView extends React.Component {
           <Text style={style.title}>DEFAITE</Text>
           <View style={style.modalChoosePseudo}>
             <Text style={[style.modalTitle, style.modalLine]}>Score</Text>
-            <Text style={[style.positivePoints, style.modalLine]}>+ 150</Text>
-            <Text style={[style.negativePoints, style.modalLine]}>- 150</Text>
-            <Text style={style.totalScore}>Total: 0</Text>
+            <Text style={[style.positivePoints, style.modalLine]}>
+              {+this.props.increaseScore || 0}
+            </Text>
+            <Text style={[style.negativePoints, style.modalLine]}>
+              {this.props.decreaseScore || 0}
+            </Text>
+            <Text style={style.totalScore}>Total: {this.props.score}</Text>
           </View>
 
           <TouchableOpacity
@@ -46,4 +50,12 @@ class DefeatView extends React.Component {
   }
 }
 
-export default DefeatView;
+const mapStateToProps = state => {
+  return {
+    score: state.score,
+    increaseScore: state.increaseScore,
+    decreaseScore: state.decreaseScore,
+  };
+};
+
+export default connect(mapStateToProps)(DefeatView);

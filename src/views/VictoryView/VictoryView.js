@@ -5,7 +5,7 @@ import {RNCamera} from 'react-native-camera';
 import Timer from '../../components/Timer/Timer';
 import {connect} from 'react-redux';
 
-class DefeatView extends React.Component {
+class VictoryView extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -25,9 +25,9 @@ class DefeatView extends React.Component {
           }}
         />
         <View style={style.defeatContainer}>
-          <Text style={style.timesUp}>Temps écoulé !</Text>
+          <Text style={style.timesUp} />
           <Timer maxTime={0} />
-          <Text style={style.title}>DEFAITE</Text>
+          <Text style={style.title}>VICTOIRE</Text>
           <View style={style.modalChoosePseudo}>
             <Text style={[style.modalTitle, style.modalLine]}>Score</Text>
             <Text style={[style.positivePoints, style.modalLine]}>
@@ -60,4 +60,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(DefeatView);
+export default connect(mapStateToProps)(VictoryView);

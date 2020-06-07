@@ -1,6 +1,11 @@
-const initialState = {userPseudo: '', score: 0};
+const initialState = {
+  userPseudo: '',
+  score: 0,
+  increaseScore: 0,
+  decreaseScore: 0,
+};
 
-export default function userPseudoReducer(state = initialState, action) {
+export default function appReducer(state = initialState, action) {
   let nextState;
   switch (action.type) {
     case 'USER_PSEUDO':

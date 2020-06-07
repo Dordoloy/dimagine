@@ -33,15 +33,28 @@ class InGame extends React.Component {
       scanImage: '',
       scanMessage: '',
       timer: TIMER_BASE,
+      victory: false,
     };
   }
 
   componentDidMount() {
+    const actionScore = {type: 'SCORE', value: 0};
+    const actionIncreaseScore = {
+      type: 'INCREASE_SCORE',
+      value: 0,
+    };
+    const actionDecreaseScore = {
+      type: 'DECREASE_SCORE',
+      value: 0,
+    };
+    this.props.dispatch(actionScore);
+    this.props.dispatch(actionIncreaseScore);
+    this.props.dispatch(actionDecreaseScore);
     const {navigate} = this.props.navigation;
     setInterval(() => {
       if (this.timerRef.current) {
         this.setState({timer: this.timerRef.current.timerToTime()});
-        if (this.state.timer === '00:00') {
+        if (this.state.timer === '00:00' && !this.state.victory) {
           navigate('DefeatView');
         }
       }
@@ -171,6 +184,7 @@ class InGame extends React.Component {
   };
 
   addToInventory() {
+    const {navigate} = this.props.navigation;
     return () => {
       if (
         this.state.inventoryImages.find(
@@ -182,6 +196,11 @@ class InGame extends React.Component {
         this.closeScan();
       } else {
         Alert.alert('', 'Vous possédez déjà cet objet !');
+      }
+
+      if (this.state.inventoryImages.length === 2) {
+        this.state.victory = true;
+        navigate('VictoryView');
       }
     };
   }

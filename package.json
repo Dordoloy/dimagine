@@ -10,9 +10,12 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@google-cloud/vision": "^2.0.0",
     "@react-native-community/masked-view": "^0.1.6",
     "@react-navigation/native": "^5.0.8",
     "@react-navigation/stack": "^5.1.0",
+    "@tensorflow/tfjs": "^2.0.0",
+    "@tensorflow/tfjs-react-native": "^0.3.0",
     "assets": "^3.0.1",
     "jetifier": "^1.6.5",
     "react": "16.9.0",

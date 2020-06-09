@@ -10,7 +10,7 @@ import Store from './redux/user/store';
 import HomeView from './views/HomeView/HomeView';
 import LoginView from './views/LoginView/LoginView';
 import InGame from './views/InGame/InGame';
-
+import VisionView from './views/VisionView/VisionView';
 const Stack = createStackNavigator();
 
 const App: () => React$Node = () => {

@@ -9,7 +9,7 @@ import InventoryModal from '../../components/InventoryModal/InventoryModal';
 import Timer from '../../components/Timer/Timer';
 import {connect} from 'react-redux';
 
-const TIMER_BASE = 10;
+const TIMER_BASE = 500;
 
 class InGame extends React.Component {
   constructor(props) {
@@ -34,6 +34,8 @@ class InGame extends React.Component {
       scanMessage: '',
       timer: TIMER_BASE,
       victory: false,
+      goodObject: 0,
+      badObject: 0,
     };
   }
 
@@ -140,7 +142,7 @@ class InGame extends React.Component {
         // TODO : Send the tag informations to the websocket and display the received information
       });
 
-      const messageName = ['Carte mere', 'Carte graphique'];
+      const messageName = ['Carte mere', 'Carte graphique', 'Disque dur'];
       const resultMessageName = messageName.find(
         element => `http://${element}` === newBarcode[data],
       );
@@ -167,14 +169,23 @@ class InGame extends React.Component {
 
   incrementScore = value => {
     let newScore = this.state.score + value;
-    this.state.increaseScore += value;
     const actionScore = {type: 'SCORE', value: newScore};
-    const actionIncreaseScore = {
-      type: 'INCREASE_SCORE',
-      value: this.state.increaseScore,
-    };
+    if (value > 0) {
+      this.state.increaseScore += value;
+      const actionIncreaseScore = {
+        type: 'INCREASE_SCORE',
+        value: this.state.increaseScore,
+      };
+      this.props.dispatch(actionIncreaseScore);
+    } else {
+      this.state.decreaseScore += value;
+      const actionDecreaseScore = {
+        type: 'DECREASE_SCORE',
+        value: this.state.decreaseScore,
+      };
+      this.props.dispatch(actionDecreaseScore);
+    }
     this.props.dispatch(actionScore);
-    this.props.dispatch(actionIncreaseScore);
     this.setState({score: newScore});
   };
 
@@ -185,6 +196,7 @@ class InGame extends React.Component {
 
   addToInventory() {
     const {navigate} = this.props.navigation;
+    const goodObjects = ['carte-mere', 'disque-dur'];
     return () => {
       if (
         this.state.inventoryImages.find(
@@ -192,13 +204,24 @@ class InGame extends React.Component {
         ) === undefined
       ) {
         this.state.inventoryImages.push(this.state.scanImage);
-        this.incrementScore(50);
+        console.log(this.state.scanImage);
+        console.log(this.state.inventoryImages);
+        if (
+          goodObjects &&
+          goodObjects.find(element => element === this.state.scanImage)
+        ) {
+          this.incrementScore(50);
+          this.state.goodObject += 1;
+        } else {
+          this.incrementScore(-30);
+          this.state.badObject += 1;
+        }
         this.closeScan();
       } else {
         Alert.alert('', 'Vous possédez déjà cet objet !');
       }
 
-      if (this.state.inventoryImages.length === 2) {
+      if (this.state.inventoryImages.includes(goodObjects[0], goodObjects[1])) {
         this.state.victory = true;
         navigate('VictoryView');
       }

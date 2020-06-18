@@ -204,8 +204,6 @@ class InGame extends React.Component {
         ) === undefined
       ) {
         this.state.inventoryImages.push(this.state.scanImage);
-        console.log(this.state.scanImage);
-        console.log(this.state.inventoryImages);
         if (
           goodObjects &&
           goodObjects.find(element => element === this.state.scanImage)
@@ -221,7 +219,10 @@ class InGame extends React.Component {
         Alert.alert('', 'Vous possédez déjà cet objet !');
       }
 
-      if (this.state.inventoryImages.includes(goodObjects[0], goodObjects[1])) {
+      if (
+        this.state.inventoryImages.includes(goodObjects[0]) &&
+        this.state.inventoryImages.includes(goodObjects[1])
+      ) {
         this.state.victory = true;
         navigate('VictoryView');
       }

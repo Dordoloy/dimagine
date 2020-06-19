@@ -8,6 +8,7 @@ import ClueModal from '../../components/ClueModal/ClueModal';
 import InventoryModal from '../../components/InventoryModal/InventoryModal';
 import Timer from '../../components/Timer/Timer';
 import {connect} from 'react-redux';
+import {playInventorySound, playScanSound} from '../../sounds';
 
 const TIMER_BASE = 500;
 
@@ -163,6 +164,7 @@ class InGame extends React.Component {
   };
 
   scanPushed = () => {
+    playScanSound();
     this.setState({scanActive: 1});
     if (this.state.isObjectToScan === 0 && this.state.scanActive === 1) {
       Alert.alert('Rien à scanner ici !');
@@ -311,7 +313,11 @@ class InGame extends React.Component {
               />
             </Modal>
           )}
-          <TouchableOpacity onPress={() => this.openInventory()}>
+          <TouchableOpacity
+            onPress={() => {
+              playInventorySound();
+              this.openInventory();
+            }}>
             <Image
               style={style.gamingButton}
               source={require('assets/images/inventory-logo.png')}

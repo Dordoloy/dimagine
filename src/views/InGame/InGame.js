@@ -36,6 +36,7 @@ class InGame extends React.Component {
       victory: false,
       goodObject: 0,
       badObject: 0,
+      alreadyTaken: [],
     };
   }
 
@@ -153,6 +154,7 @@ class InGame extends React.Component {
       ) {
         this.openScan();
         this.state.scanMessage = resultMessageName;
+        console.log(this.state.scanMessage);
         this.state.scanImage = resultImageName.replace(/\s/g, '-');
       } else {
         Alert.alert('Rien à scanner ici !');
@@ -206,11 +208,20 @@ class InGame extends React.Component {
         this.state.inventoryImages.push(this.state.scanImage);
         if (
           goodObjects &&
-          goodObjects.find(element => element === this.state.scanImage)
+          goodObjects.find(element => element === this.state.scanImage) &&
+          !this.state.alreadyTaken.find(
+            element => element === this.state.scanImage,
+          )
         ) {
+          this.state.alreadyTaken.push(this.state.scanImage);
           this.incrementScore(50);
           this.state.goodObject += 1;
-        } else {
+        } else if (
+          !this.state.alreadyTaken.find(
+            element => element === this.state.scanImage,
+          )
+        ) {
+          this.state.alreadyTaken.push(this.state.scanImage);
           this.incrementScore(-30);
           this.state.badObject += 1;
         }

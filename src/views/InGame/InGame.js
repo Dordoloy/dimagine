@@ -36,6 +36,7 @@ class InGame extends React.Component {
       victory: false,
       goodObject: 0,
       badObject: 0,
+      alreadyTaken: [],
     };
   }
 
@@ -153,6 +154,7 @@ class InGame extends React.Component {
       ) {
         this.openScan();
         this.state.scanMessage = resultMessageName;
+        console.log(this.state.scanMessage);
         this.state.scanImage = resultImageName.replace(/\s/g, '-');
       } else {
         Alert.alert('Rien à scanner ici !');
@@ -204,15 +206,22 @@ class InGame extends React.Component {
         ) === undefined
       ) {
         this.state.inventoryImages.push(this.state.scanImage);
-        console.log(this.state.scanImage);
-        console.log(this.state.inventoryImages);
         if (
           goodObjects &&
-          goodObjects.find(element => element === this.state.scanImage)
+          goodObjects.find(element => element === this.state.scanImage) &&
+          !this.state.alreadyTaken.find(
+            element => element === this.state.scanImage,
+          )
         ) {
+          this.state.alreadyTaken.push(this.state.scanImage);
           this.incrementScore(50);
           this.state.goodObject += 1;
-        } else {
+        } else if (
+          !this.state.alreadyTaken.find(
+            element => element === this.state.scanImage,
+          )
+        ) {
+          this.state.alreadyTaken.push(this.state.scanImage);
           this.incrementScore(-30);
           this.state.badObject += 1;
         }
@@ -221,7 +230,10 @@ class InGame extends React.Component {
         Alert.alert('', 'Vous possédez déjà cet objet !');
       }
 
-      if (this.state.inventoryImages.includes(goodObjects[0], goodObjects[1])) {
+      if (
+        this.state.inventoryImages.includes(goodObjects[0]) &&
+        this.state.inventoryImages.includes(goodObjects[1])
+      ) {
         this.state.victory = true;
         navigate('VictoryView');
       }

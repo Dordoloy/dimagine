@@ -14,7 +14,7 @@ import DefeatView from './views/DefeatView/DefeatView';
 import VictoryView from './views/VictoryView/VictoryView';
 
 const Stack = createStackNavigator();
-
+console.disableYellowBox = true;
 const App: () => React$Node = () => {
   return (
     <Provider store={Store}>

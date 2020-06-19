@@ -15,8 +15,7 @@
       - Uninstall your app from your emulator / phone.
       - Do react-native link react-native-sound
       - Clear Android build cache with cd android && ./gradlew cleanBuildCache
-      - Start react-native with npm run start or whatever
-      - Do a fresh build with npm run android or whatever.
+      - Run npx react-native run-android in app folder
   - For IOS :
     - Open XCode
     - Run the build (we still have some errors to correct)

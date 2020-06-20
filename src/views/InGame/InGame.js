@@ -8,7 +8,7 @@ import ClueModal from '../../components/ClueModal/ClueModal';
 import InventoryModal from '../../components/InventoryModal/InventoryModal';
 import Timer from '../../components/Timer/Timer';
 import {connect} from 'react-redux';
-import {playInventorySound, playScanSound} from '../../sounds';
+import {playInventorySound, playScanSound, playClueSound} from '../../Sounds';
 
 const TIMER_BASE = 500;
 
@@ -94,6 +94,7 @@ class InGame extends React.Component {
   isVisibleInventory = () => this.state.inventory;
 
   openClue = () => {
+    playClueSound();
     const clueTypeList = ['object', 'position'];
     const clueType = clueTypeList[Math.floor(Math.random() * 2)];
     const clueMessageListObject = [

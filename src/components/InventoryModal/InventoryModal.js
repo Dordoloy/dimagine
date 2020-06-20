@@ -1,6 +1,7 @@
 import {Text, View, Image, TouchableOpacity} from 'react-native';
 import React from 'react';
 import style from './style';
+import {playDeleteSound} from '../../Sounds';
 
 type Props = {
   onPress: () => any,
@@ -22,6 +23,7 @@ const InventoryModal: React.FC<Props> = props => (
           <TouchableOpacity
             testID={'close-button'}
             onPress={() => {
+              playDeleteSound();
               props.images.splice(key, 1);
             }}
             title="Close">

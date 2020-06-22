@@ -150,7 +150,7 @@ class InGame extends React.Component {
         // TODO : Send the tag informations to the websocket and display the received information
       });
 
-      const messageName = [
+      let messageName = [
         'Carte mere',
         'Carte graphique',
         'Disque dur',
@@ -160,6 +160,23 @@ class InGame extends React.Component {
         'Processeur',
         'RAM',
       ];
+
+      if (this.props.mission === 'solaire') {
+        messageName = [
+          'Jupiter',
+          'Mars',
+          'Mercure',
+          'Neptune',
+          'Saturne',
+          'Terre',
+          'Uranus',
+          'Venus',
+          'Charon',
+          'Eris',
+          'Sedna',
+        ];
+      }
+
       const resultMessageName = messageName.find(
         element => `http://${element}` === newBarcode[data],
       );
@@ -215,7 +232,7 @@ class InGame extends React.Component {
 
   addToInventory() {
     const {navigate} = this.props.navigation;
-    const goodObjects = [
+    let goodObjects = [
       'carte-mere',
       'carte-graphique',
       'disque-dur',
@@ -223,6 +240,18 @@ class InGame extends React.Component {
       'processeur',
       'ram',
     ];
+    if (this.props.mission === 'solaire') {
+      goodObjects = [
+        'jupiter',
+        'mars',
+        'mercure',
+        'neptune',
+        'saturne',
+        'terre',
+        'uranus',
+        'venus',
+      ];
+    }
     return () => {
       playDeleteSound();
       if (
@@ -261,6 +290,12 @@ class InGame extends React.Component {
       }
 
       if (
+        this.props.mission === 'solaire' &&
+        this.state.inventoryImages.includes(goodObjects[0])
+      ) {
+        this.state.victory = true;
+        navigate('VictoryView');
+      } else if (
         this.state.inventoryImages.includes(goodObjects[0]) &&
         this.state.inventoryImages.includes(goodObjects[1]) &&
         this.state.inventoryImages.includes(goodObjects[2]) &&
@@ -376,6 +411,7 @@ const mapStateToProps = state => {
     score: state.score,
     increaseScore: state.increaseScore,
     decreaseScore: state.decreaseScore,
+    mission: state.mission,
   };
 };
 

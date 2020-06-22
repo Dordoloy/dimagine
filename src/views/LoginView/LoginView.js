@@ -10,14 +10,27 @@ import React from 'react';
 import style from './style';
 import {RNCamera} from 'react-native-camera';
 import {connect} from 'react-redux';
+import {addPseudo} from '_components/Socket/Socket';
 
 class LoginView extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      pseudoUser: '',
+    };
   }
+
   togglePseudo = pseudo => {
+    this.setState({pseudoUser: pseudo});
     const action = {type: 'USER_PSEUDO', value: pseudo};
     this.props.dispatch(action);
+  };
+
+  loginUser = () => {
+    const {navigate} = this.props.navigation;
+    addPseudo(this.state.pseudoUser);
+    navigate('InGame');
   };
 
   render() {
@@ -55,7 +68,7 @@ class LoginView extends React.Component {
               {userPseudo !== '' ? (
                 <TouchableOpacity
                   style={style.validateButton}
-                  onPress={() => navigate('InGame')}>
+                  onPress={() => this.loginUser()}>
                   <Text style={style.buttonText}>Valider</Text>
                 </TouchableOpacity>
               ) : (

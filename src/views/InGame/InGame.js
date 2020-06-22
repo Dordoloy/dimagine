@@ -68,26 +68,6 @@ class InGame extends React.Component {
         }
       }
     }, 1001);
-
-    var socket = new WebSocket('wss://echo.websocket.org/'); // test de connexion
-
-    // Change the websocket address with your ngrok link bellow
-    // var socket = new WebSocket('ws://1cb93a5e.ngrok.io/:8080');
-
-    let newPseudo = {command: 'pseudo', pseudo: 'Rom1du01'};
-    let getList = {command: 'list'};
-    let subscribeRoom = {command: 'subscribe', channel: 'toto'};
-    let roomPlayers = {command: 'roomPlayers'};
-    let sendMessage = {command: 'message', message: 'Coucou ca va ?'};
-    let unsubscribeRoom = {command: 'unsubscribe'};
-
-    socket.onopen = () => socket.send(JSON.stringify(getList));
-
-    socket.onmessage = ({data}) => {
-      console.log(data);
-
-      // this.setState({echo: data});
-    };
   }
 
   openScan = () => this.setState({scanVisible: true});

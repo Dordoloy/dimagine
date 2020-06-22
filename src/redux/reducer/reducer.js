@@ -3,6 +3,7 @@ const initialState = {
   score: 0,
   increaseScore: 0,
   decreaseScore: 0,
+  mission: '',
 };
 
 export default function appReducer(state = initialState, action) {
@@ -30,6 +31,12 @@ export default function appReducer(state = initialState, action) {
       nextState = {
         ...state,
         decreaseScore: action.value,
+      };
+      return nextState;
+    case 'MISSION':
+      nextState = {
+        ...state,
+        mission: action.value,
       };
       return nextState;
     default:

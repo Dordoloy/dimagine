@@ -23,6 +23,7 @@ class LoginView extends React.Component {
   render() {
     const {navigate} = this.props.navigation;
     const userPseudo = this.props.userPseudo;
+    const mission = this.props.mission;
 
     return (
       <View style={style.mainContainer}>
@@ -44,7 +45,11 @@ class LoginView extends React.Component {
             <Image source={require('assets/images/back-button.png')} />
           </TouchableOpacity>
           <View style={style.centeredElements}>
-            <Text style={style.titleMission}>Mission "Pc"</Text>
+            <Text style={style.titleMission}>
+              {mission === 'solaire'
+                ? 'Mission "Système solaire"'
+                : 'Mission "Pc"'}
+            </Text>
             <View style={style.modalChoosePseudo}>
               <Text style={style.modaltitle}>Choisir un pseudo</Text>
               <TextInput
@@ -85,6 +90,7 @@ class LoginView extends React.Component {
 const mapStateToProps = state => {
   return {
     userPseudo: state.userPseudo,
+    mission: state.mission,
   };
 };
 

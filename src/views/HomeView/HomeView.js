@@ -2,10 +2,16 @@ import {Text, TouchableOpacity, View, Image, Switch} from 'react-native';
 import {RNCamera} from 'react-native-camera';
 import React, {useState} from 'react';
 import style from './style';
+import {connect} from 'react-redux';
 
-export default function HomeView({navigation}) {
+function HomeView({navigation, dispatch}) {
   const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+  const toggleSwitch = () => {
+    setIsEnabled(previousState => !previousState);
+    const mission = {type: 'MISSION', value: isEnabled ? 'pc' : 'solaire'};
+    dispatch(mission);
+    console.log(mission);
+  };
   return (
     <View style={style.mainContainer}>
       <RNCamera
@@ -49,4 +55,12 @@ export default function HomeView({navigation}) {
   );
 }
 
-// export default HomeView;
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatch: action => {
+      dispatch(action);
+    },
+  };
+};
+
+export default connect(mapDispatchToProps)(HomeView);

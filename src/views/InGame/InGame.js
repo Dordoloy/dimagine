@@ -150,7 +150,16 @@ class InGame extends React.Component {
         // TODO : Send the tag informations to the websocket and display the received information
       });
 
-      const messageName = ['Carte mere', 'Carte graphique', 'Disque dur'];
+      const messageName = [
+        'Carte mere',
+        'Carte graphique',
+        'Disque dur',
+        'Alimentation',
+        'Arduino',
+        'LED',
+        'Processeur',
+        'RAM',
+      ];
       const resultMessageName = messageName.find(
         element => `http://${element}` === newBarcode[data],
       );
@@ -206,7 +215,14 @@ class InGame extends React.Component {
 
   addToInventory() {
     const {navigate} = this.props.navigation;
-    const goodObjects = ['carte-mere', 'disque-dur'];
+    const goodObjects = [
+      'carte-mere',
+      'carte-graphique',
+      'disque-dur',
+      'alimentation',
+      'processeur',
+      'ram',
+    ];
     return () => {
       playDeleteSound();
       if (
@@ -214,6 +230,11 @@ class InGame extends React.Component {
           element => element === this.state.scanImage,
         ) === undefined
       ) {
+        console.log(goodObjects);
+        console.log(this.state.scanImage);
+        console.log(
+          goodObjects.find(element => element === this.state.scanImage),
+        );
         this.state.inventoryImages.push(this.state.scanImage);
         if (
           goodObjects &&
@@ -231,7 +252,7 @@ class InGame extends React.Component {
           )
         ) {
           this.state.alreadyTaken.push(this.state.scanImage);
-          this.incrementScore(-30);
+          this.incrementScore(-75);
           this.state.badObject += 1;
         }
         this.closeScan();
@@ -241,7 +262,11 @@ class InGame extends React.Component {
 
       if (
         this.state.inventoryImages.includes(goodObjects[0]) &&
-        this.state.inventoryImages.includes(goodObjects[1])
+        this.state.inventoryImages.includes(goodObjects[1]) &&
+        this.state.inventoryImages.includes(goodObjects[2]) &&
+        this.state.inventoryImages.includes(goodObjects[3]) &&
+        this.state.inventoryImages.includes(goodObjects[4]) &&
+        this.state.inventoryImages.includes(goodObjects[5])
       ) {
         this.state.victory = true;
         navigate('VictoryView');

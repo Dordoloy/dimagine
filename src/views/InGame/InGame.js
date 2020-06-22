@@ -13,7 +13,7 @@ import {
   onOpen,
   onClose,
   onError,
-  doSend,
+  onSend,
   onMessage,
 } from '_components/Socket/Socket';
 
@@ -70,34 +70,6 @@ class InGame extends React.Component {
         }
       }
     }, 1001);
-
-    let newPseudo = {command: 'pseudo', pseudo: 'Rom1du01'};
-    let getList = {command: 'list'};
-    let subscribeRoom = {command: 'subscribe', channel: 'toto'};
-    let roomPlayers = {command: 'roomPlayers'};
-    let sendMessage = {command: 'message', message: 'Coucou ca va ?'};
-    let unsubscribeRoom = {command: 'unsubscribe'};
-
-    socket.onopen = function(newPseudo) {
-      onOpen(newPseudo);
-    };
-    socket.onclose = function(evt) {
-      onClose(evt);
-    };
-    socket.onmessage = function(evt) {
-      onMessage(evt);
-    };
-    socket.onerror = function(evt) {
-      onError(evt);
-    };
-
-    socket.onopen = () => socket.send(JSON.stringify(newPseudo));
-
-    socket.onmessage = ({data}) => {
-      console.log(data);
-
-      // this.setState({echo: data});
-    };
   }
 
   openScan = () => this.setState({scanVisible: true});

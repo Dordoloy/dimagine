@@ -10,7 +10,7 @@ import React from 'react';
 import style from './style';
 import {RNCamera} from 'react-native-camera';
 import {connect} from 'react-redux';
-import {socket, onMessage, newPseudo} from '_components/Socket/Socket';
+import {addPseudo} from '_components/Socket/Socket';
 
 class LoginView extends React.Component {
   constructor(props) {
@@ -29,8 +29,7 @@ class LoginView extends React.Component {
 
   loginUser = () => {
     const {navigate} = this.props.navigation;
-    // let newPseudo = {command: 'pseudo', pseudo: this.state.pseudoUser};
-    newPseudo(this.state.pseudoUser);
+    addPseudo(this.state.pseudoUser);
     navigate('InGame');
   };
 

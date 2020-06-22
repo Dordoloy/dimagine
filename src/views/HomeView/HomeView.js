@@ -3,7 +3,12 @@ import {RNCamera} from 'react-native-camera';
 import React from 'react';
 import style from './style';
 import {connect} from 'react-redux';
-import {onOpen} from '_components/Socket/Socket';
+import {
+  onOpen,
+  getList,
+  subscribeRoom,
+  doMessage,
+} from '_components/Socket/Socket';
 
 class HomeView extends React.Component {
   constructor(props) {
@@ -16,43 +21,48 @@ class HomeView extends React.Component {
 
   clickGo = () => {
     onOpen();
+    getList();
+    subscribeRoom('testroom');
+    doMessage('coucou les amigos');
     const {navigate} = this.props.navigation;
     navigate('LoginView');
   };
 
   render() {
-    <View style={style.mainContainer}>
-      <RNCamera
-        style={style.backgroundCamera}
-        type={RNCamera.Constants.Type.back}
-        flashMode={RNCamera.Constants.FlashMode.on}
-        androidCameraPermissionOptions={{
-          title: "Permission d'utiliser la camera",
-          message: "L'application necessite l'autorisation de la camera",
-          buttonPositive: 'Autoriser',
-          buttonNegative: 'Refuser',
-        }}
-        onGoogleVisionBarcodesDetected={({barcodes}) => {
-          console.log(barcodes);
-        }}
-      />
-      <View style={style.goContainer}>
-        <Image
-          style={style.logoDimagine}
-          source={require('assets/images/logo_title_vertical.png')}
+    return (
+      <View style={style.mainContainer}>
+        <RNCamera
+          style={style.backgroundCamera}
+          type={RNCamera.Constants.Type.back}
+          flashMode={RNCamera.Constants.FlashMode.on}
+          androidCameraPermissionOptions={{
+            title: "Permission d'utiliser la camera",
+            message: "L'application necessite l'autorisation de la camera",
+            buttonPositive: 'Autoriser',
+            buttonNegative: 'Refuser',
+          }}
+          onGoogleVisionBarcodesDetected={({barcodes}) => {
+            console.log(barcodes);
+          }}
         />
-        <Text style={style.subTitle}>CHASSE AU TRESOR</Text>
-        <TouchableOpacity style={style.button} onPress={() => clickGo()}>
-          <Text style={style.buttonText}>GO</Text>
-        </TouchableOpacity>
+        <View style={style.goContainer}>
+          <Image
+            style={style.logoDimagine}
+            source={require('assets/images/logo_title_vertical.png')}
+          />
+          <Text style={style.subTitle}>CHASSE AU TRESOR</Text>
+          <TouchableOpacity style={style.button} onPress={() => this.clickGo()}>
+            <Text style={style.buttonText}>GO</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>;
+    );
   }
 }
 
 const mapStateToProps = state => {
   return {
-    userPseudo: state.userPseudo,
+    // userPseudo: state.userPseudo,
   };
 };
 const mapDispatchToProps = dispatch => {
@@ -65,4 +75,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(LoginView);
+)(HomeView);

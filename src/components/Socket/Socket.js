@@ -1,11 +1,18 @@
-const socketAdress = 'fddd7d9bcc38.ngrok.io';
-const webSocketAdress = 'wss://' + socketAdress + '/:8080';
-export const socket = new WebSocket(webSocketAdress); // ngrok connexion
+import {connect} from 'react-redux';
+
 // export const socket = new WebSocket('wss://echo.websocket.org/'); // test de connexion
 
+const socketAdress = 'cfc0367bee12.ngrok.io';
+const webSocketAdress = 'wss://' + socketAdress + '/:8080';
+
+export const socket = new WebSocket(webSocketAdress); // ngrok connexion
+
 export const onOpen = () => {
-  console.log('CONNECTEDDDD');
-  socket.onopen = () => socket.send('CONNECTED');
+  socket.onopen = () => {
+    console.log('CONNECTED');
+    const action = {type: 'LOADED_APP', value: true};
+    // dispatch(action);
+  };
 };
 
 export const onClose = () => {
@@ -24,10 +31,7 @@ export const onError = event => {
 export const onSend = message => {
   var strToJson = JSON.stringify(message);
   // console.log(strToJson);
-
   socket.send(strToJson);
-
-  socket.onmessage = () => socket.send(strToJson);
 
   socket.onmessage = ({data}) => {
     console.log(data);
@@ -63,3 +67,20 @@ export const subscribeRoom = room => {
   let subscribeRoom = {command: 'subscribe', channel: room};
   onSend(subscribeRoom);
 };
+
+// const mapStateToProps = state => {
+//   return {
+//     loaded: state.loaded,
+//   };
+// };
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     dispatch: action => {
+//       dispatch(action);
+//     },
+//   };
+// };
+// export default connect(
+//   mapStateToProps,
+//   mapDispatchToProps,
+// )(onOpen);

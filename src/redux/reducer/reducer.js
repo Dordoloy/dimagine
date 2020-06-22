@@ -3,6 +3,7 @@ const initialState = {
   score: 0,
   increaseScore: 0,
   decreaseScore: 0,
+  loaded: false,
 };
 
 export default function appReducer(state = initialState, action) {
@@ -12,6 +13,12 @@ export default function appReducer(state = initialState, action) {
       nextState = {
         ...state,
         userPseudo: action.value,
+      };
+      return nextState;
+    case 'LOADED_APP':
+      nextState = {
+        ...state,
+        loaded: action.value,
       };
       return nextState;
     case 'SCORE':

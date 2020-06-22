@@ -1,9 +1,12 @@
 import {Text, TouchableOpacity, View, Image} from 'react-native';
 import {RNCamera} from 'react-native-camera';
 import React from 'react';
+import {ActivityIndicator} from 'react-native';
+
 import style from './style';
 import {connect} from 'react-redux';
 import {
+  socket,
   onOpen,
   getList,
   subscribeRoom,
@@ -15,15 +18,19 @@ class HomeView extends React.Component {
     super(props);
 
     this.state = {
-      pseudoUser: '',
+      loaded: false,
+    };
+  }
+
+  componentDidMount() {
+    this.test();
+    socket.onopen = () => {
+      console.log('CONNECTED');
+      this.setState({loaded: true});
     };
   }
 
   clickGo = () => {
-    onOpen();
-    getList();
-    subscribeRoom('testroom');
-    doMessage('coucou les amigos');
     const {navigate} = this.props.navigation;
     navigate('LoginView');
   };
@@ -51,9 +58,21 @@ class HomeView extends React.Component {
             source={require('assets/images/logo_title_vertical.png')}
           />
           <Text style={style.subTitle}>CHASSE AU TRESOR</Text>
-          <TouchableOpacity style={style.button} onPress={() => this.clickGo()}>
-            <Text style={style.buttonText}>GO</Text>
-          </TouchableOpacity>
+          <Text>{this.state.loaded}</Text>
+
+          {this.state.loaded === false && (
+            <View>
+              <ActivityIndicator size="large" color="#ffa500" />
+              <Text style={style.buttonText}>Chargement</Text>
+            </View>
+          )}
+          {this.state.loaded === true && (
+            <TouchableOpacity
+              style={style.button}
+              onPress={() => this.clickGo()}>
+              <Text style={style.buttonText}>GO</Text>
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     );
@@ -62,7 +81,7 @@ class HomeView extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    // userPseudo: state.userPseudo,
+    // loaded: state.loaded,
   };
 };
 const mapDispatchToProps = dispatch => {

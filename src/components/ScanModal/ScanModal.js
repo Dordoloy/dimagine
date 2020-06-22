@@ -3,8 +3,8 @@ import React from 'react';
 import style from './style';
 
 type Props = {
-  onPress: () => any,
-  onKeep: () => any,
+  onPress: () => {},
+  onKeep: () => {},
   image: string,
   message: string,
 };

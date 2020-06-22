@@ -259,11 +259,6 @@ class InGame extends React.Component {
           element => element === this.state.scanImage,
         ) === undefined
       ) {
-        console.log(goodObjects);
-        console.log(this.state.scanImage);
-        console.log(
-          goodObjects.find(element => element === this.state.scanImage),
-        );
         this.state.inventoryImages.push(this.state.scanImage);
         if (
           goodObjects &&
@@ -291,7 +286,14 @@ class InGame extends React.Component {
 
       if (
         this.props.mission === 'solaire' &&
-        this.state.inventoryImages.includes(goodObjects[0])
+        this.state.inventoryImages.includes(goodObjects[0]) &&
+        this.state.inventoryImages.includes(goodObjects[1]) &&
+        this.state.inventoryImages.includes(goodObjects[2]) &&
+        this.state.inventoryImages.includes(goodObjects[3]) &&
+        this.state.inventoryImages.includes(goodObjects[4]) &&
+        this.state.inventoryImages.includes(goodObjects[5]) &&
+        this.state.inventoryImages.includes(goodObjects[6]) &&
+        this.state.inventoryImages.includes(goodObjects[7])
       ) {
         this.state.victory = true;
         navigate('VictoryView');

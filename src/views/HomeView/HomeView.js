@@ -3,14 +3,15 @@ import {RNCamera} from 'react-native-camera';
 import React, {useState} from 'react';
 import style from './style';
 import {connect} from 'react-redux';
+import {playGoSound, playSwitchSound} from '../../Sounds';
 
 function HomeView({navigation, dispatch}) {
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => {
+    playSwitchSound();
     setIsEnabled(previousState => !previousState);
     const mission = {type: 'MISSION', value: isEnabled ? 'pc' : 'solaire'};
     dispatch(mission);
-    console.log(mission);
   };
   return (
     <View style={style.mainContainer}>
@@ -36,7 +37,10 @@ function HomeView({navigation, dispatch}) {
         <Text style={style.subTitle}>CHASSE AU TRESOR</Text>
         <TouchableOpacity
           style={style.button}
-          onPress={() => navigation.navigate('LoginView')}>
+          onPress={() => {
+            playGoSound();
+            navigation.navigate('LoginView');
+          }}>
           <Text style={style.buttonText}>GO</Text>
         </TouchableOpacity>
         <Switch

@@ -13,6 +13,9 @@ import {
   playScanSound,
   playClueSound,
   playDeleteSound,
+  playWinSound,
+  playThrowSound,
+  playModalSound,
 } from '../../Sounds';
 
 const TIMER_BASE = 500;
@@ -95,7 +98,10 @@ class InGame extends React.Component {
   isVisibleScan = () => this.state.scanVisible;
 
   openInventory = () => this.setState({inventory: true});
-  closeInventory = () => this.setState({inventory: false});
+  closeInventory = () => {
+    playModalSound();
+    this.setState({inventory: false});
+  };
   isVisibleInventory = () => this.state.inventory;
 
   openClue = () => {
@@ -130,7 +136,10 @@ class InGame extends React.Component {
     this.props.dispatch(actionScore);
     this.props.dispatch(actionDecreaseScore);
   };
-  closeClue = () => this.setState({clue: false});
+  closeClue = () => {
+    playModalSound();
+    this.setState({clue: false});
+  };
   isVisibleClue = () => this.state.clue;
 
   barcodeRecognized = ({barcodes}) => {
@@ -296,6 +305,7 @@ class InGame extends React.Component {
         this.state.inventoryImages.includes(goodObjects[7])
       ) {
         this.state.victory = true;
+        playWinSound();
         navigate('VictoryView');
       } else if (
         this.props.mission !== 'solaire' &&
@@ -307,6 +317,7 @@ class InGame extends React.Component {
         this.state.inventoryImages.includes(goodObjects[5])
       ) {
         this.state.victory = true;
+        playWinSound();
         navigate('VictoryView');
       }
     };
@@ -377,7 +388,7 @@ class InGame extends React.Component {
             <Modal testID={'modal'} isVisible={this.state.scanVisible}>
               <ScanModal
                 onPress={() => {
-                  playDeleteSound();
+                  playThrowSound();
                   this.closeScan();
                 }}
                 onKeep={this.addToInventory()}

@@ -10,6 +10,7 @@ import React from 'react';
 import style from './style';
 import {RNCamera} from 'react-native-camera';
 import {connect} from 'react-redux';
+import {playGoSound} from '../../Sounds';
 
 class LoginView extends React.Component {
   constructor(props) {
@@ -60,7 +61,10 @@ class LoginView extends React.Component {
               {userPseudo !== '' ? (
                 <TouchableOpacity
                   style={style.validateButton}
-                  onPress={() => navigate('InGame')}>
+                  onPress={() => {
+                    playGoSound();
+                    navigate('InGame');
+                  }}>
                   <Text style={style.buttonText}>Valider</Text>
                 </TouchableOpacity>
               ) : (

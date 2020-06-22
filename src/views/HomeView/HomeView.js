@@ -7,6 +7,9 @@ import {playGoSound, playSwitchSound} from '../../Sounds';
 
 function HomeView({navigation, dispatch}) {
   const [isEnabled, setIsEnabled] = useState(false);
+  // getList();
+  // subscribeRoom('testroom');
+  // doMessage('coucou les amigos');
   const toggleSwitch = () => {
     playSwitchSound();
     setIsEnabled(previousState => !previousState);
@@ -59,6 +62,11 @@ function HomeView({navigation, dispatch}) {
   );
 }
 
+const mapStateToProps = state => {
+  return {
+    userPseudo: state.userPseudo,
+  };
+};
 const mapDispatchToProps = dispatch => {
   return {
     dispatch: action => {

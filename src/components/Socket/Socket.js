@@ -1,40 +1,65 @@
-export const socket = () => {
-  const sock = new WebSocket('wss://echo.websocket.org/'); // test de connexion
+const socketAdress = 'fddd7d9bcc38.ngrok.io';
+const webSocketAdress = 'wss://' + socketAdress + '/:8080';
+export const socket = new WebSocket(webSocketAdress); // ngrok connexion
+// export const socket = new WebSocket('wss://echo.websocket.org/'); // test de connexion
 
-  // Change the websocket address with your ngrok link bellow
-  // var sock = new WebSocket('ws://1cb93a5e.ngrok.io/:8080');
-  return sock;
+export const onOpen = () => {
+  console.log('CONNECTEDDDD');
+  socket.onopen = () => socket.send('CONNECTED');
 };
 
-export const onOpen = evt => {
-  console.log('CONNECTED');
-  doSend('WebSocket rocks');
-};
-
-export const onClose = evt => {
+export const onClose = () => {
   socket.close();
   console.log('DISCONNECTED');
 };
 
-export const onMessage = evt => {
-  console.log(evt.data);
-  // socket.close();
+export const onMessage = event => {
+  console.log(event);
 };
 
-export const onError = evt => {
-  console.log(evt.data);
+export const onError = event => {
+  console.log(event);
 };
 
-export const doSend = message => {
-  console.log(message);
+export const onSend = message => {
   var strToJson = JSON.stringify(message);
-  console.log(message);
+  // console.log(strToJson);
 
   socket.send(strToJson);
+
+  socket.onmessage = () => socket.send(strToJson);
+
+  socket.onmessage = ({data}) => {
+    console.log(data);
+  };
 };
 
-export const newPseudo = pseudoUser => {
-  console.log('Pseudo user: ' + pseudoUser);
-  let addUser = {command: 'pseudo', pseudo: pseudoUser};
-  doSend(addUser);
+export const addPseudo = pseudoUser => {
+  let newPseudo = {command: 'pseudo', pseudo: pseudoUser};
+  onSend(newPseudo);
+};
+
+export const getList = () => {
+  const getList = {command: 'list'};
+  onSend(getList);
+};
+
+export const getRoomPlayers = () => {
+  const roomPlayers = {command: 'roomPlayers'};
+  onSend(roomPlayers);
+};
+
+export const unsubscribeRoom = () => {
+  const unsubscribeRoom = {command: 'unsubscribe'};
+  onSend(unsubscribeRoom);
+};
+
+export const doMessage = message => {
+  let sendMessage = {command: 'message', message: message};
+  onSend(sendMessage);
+};
+
+export const subscribeRoom = room => {
+  let subscribeRoom = {command: 'subscribe', channel: room};
+  onSend(subscribeRoom);
 };

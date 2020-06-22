@@ -44,4 +44,13 @@ export default StyleSheet.create({
     fontSize: 30,
     marginBottom: 150,
   },
+  switchMission: {
+    marginTop: 40,
+    marginBottom: 20,
+    scaleX: 2,
+    scaleY: 2,
+  },
+  switchText: {
+    fontSize: 25,
+  },
 });

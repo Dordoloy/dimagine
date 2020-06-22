@@ -4,6 +4,7 @@ import style from './style';
 import {RNCamera} from 'react-native-camera';
 import Timer from '../../components/Timer/Timer';
 import {connect} from 'react-redux';
+import {playRetrySound} from '../../Sounds';
 
 class VictoryView extends React.Component {
   constructor(props) {
@@ -42,6 +43,7 @@ class VictoryView extends React.Component {
           <TouchableOpacity
             style={style.button}
             onPress={() => {
+              playRetrySound();
               navigate('HomeView');
             }}>
             <Text style={style.buttonText}>Rejouer</Text>

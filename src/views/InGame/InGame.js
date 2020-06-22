@@ -9,6 +9,14 @@ import InventoryModal from '../../components/InventoryModal/InventoryModal';
 import Timer from '../../components/Timer/Timer';
 import {connect} from 'react-redux';
 import {
+  socket,
+  onOpen,
+  onClose,
+  onError,
+  doSend,
+  onMessage,
+} from '_components/Socket/Socket';
+import {
   playInventorySound,
   playScanSound,
   playClueSound,
@@ -72,11 +80,6 @@ class InGame extends React.Component {
       }
     }, 1001);
 
-    var socket = new WebSocket('wss://echo.websocket.org/'); // test de connexion
-
-    // Change the websocket address with your ngrok link bellow
-    // var socket = new WebSocket('ws://1cb93a5e.ngrok.io/:8080');
-
     let newPseudo = {command: 'pseudo', pseudo: 'Rom1du01'};
     let getList = {command: 'list'};
     let subscribeRoom = {command: 'subscribe', channel: 'toto'};
@@ -84,7 +87,20 @@ class InGame extends React.Component {
     let sendMessage = {command: 'message', message: 'Coucou ca va ?'};
     let unsubscribeRoom = {command: 'unsubscribe'};
 
-    socket.onopen = () => socket.send(JSON.stringify(getList));
+    socket.onopen = function(newPseudo) {
+      onOpen(newPseudo);
+    };
+    socket.onclose = function(evt) {
+      onClose(evt);
+    };
+    socket.onmessage = function(evt) {
+      onMessage(evt);
+    };
+    socket.onerror = function(evt) {
+      onError(evt);
+    };
+
+    socket.onopen = () => socket.send(JSON.stringify(newPseudo));
 
     socket.onmessage = ({data}) => {
       console.log(data);

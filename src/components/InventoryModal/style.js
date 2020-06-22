@@ -27,11 +27,26 @@ export default StyleSheet.create({
     borderBottomWidth: 2,
   },
   inventoryCase: {
-    flex: 1,
     flexDirection: 'row',
+    width: 150,
+    overflow: 'hidden',
+    justifyContent: 'center',
   },
   crossObject: {
     fontSize: 30,
     color: 'red',
+  },
+  containerInventory: {
+    width: 300,
+    height: '90%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  containeritems: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
 });

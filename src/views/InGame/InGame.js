@@ -8,7 +8,12 @@ import ClueModal from '../../components/ClueModal/ClueModal';
 import InventoryModal from '../../components/InventoryModal/InventoryModal';
 import Timer from '../../components/Timer/Timer';
 import {connect} from 'react-redux';
-import {playInventorySound, playScanSound, playClueSound} from '../../Sounds';
+import {
+  playInventorySound,
+  playScanSound,
+  playClueSound,
+  playDeleteSound,
+} from '../../Sounds';
 
 const TIMER_BASE = 500;
 
@@ -203,6 +208,7 @@ class InGame extends React.Component {
     const {navigate} = this.props.navigation;
     const goodObjects = ['carte-mere', 'disque-dur'];
     return () => {
+      playDeleteSound();
       if (
         this.state.inventoryImages.find(
           element => element === this.state.scanImage,
@@ -307,7 +313,10 @@ class InGame extends React.Component {
           {this.state.scanVisible && (
             <Modal testID={'modal'} isVisible={this.state.scanVisible}>
               <ScanModal
-                onPress={this.closeScan}
+                onPress={() => {
+                  playDeleteSound();
+                  this.closeScan();
+                }}
                 onKeep={this.addToInventory()}
                 image={this.state.scanImage}
                 message={this.state.scanMessage}

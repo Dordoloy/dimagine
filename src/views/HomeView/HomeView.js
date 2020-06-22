@@ -1,6 +1,7 @@
 import {Text, TouchableOpacity, View, Image, Switch} from 'react-native';
 import {RNCamera} from 'react-native-camera';
 import React, {useState} from 'react';
+import {ActivityIndicator} from 'react-native';
 import style from './style';
 import {connect} from 'react-redux';
 import {playGoSound, playSwitchSound} from '../../Sounds';
@@ -38,14 +39,24 @@ function HomeView({navigation, dispatch}) {
           source={require('assets/images/logo_title_vertical.png')}
         />
         <Text style={style.subTitle}>CHASSE AU TRESOR</Text>
-        <TouchableOpacity
-          style={style.button}
-          onPress={() => {
-            playGoSound();
-            navigation.navigate('LoginView');
-          }}>
-          <Text style={style.buttonText}>GO</Text>
-        </TouchableOpacity>
+        <Text>{this.state.loaded}</Text>
+
+        {this.state.loaded === false && (
+          <View>
+            <ActivityIndicator size="large" color="#ffa500" />
+            <Text style={style.buttonText}>Chargement</Text>
+          </View>
+        )}
+        {this.state.loaded === true && (
+          <TouchableOpacity
+            style={style.button}
+            onPress={() => {
+              playGoSound();
+              navigation.navigate('LoginView');
+            }}>
+            <Text style={style.buttonText}>GO</Text>
+          </TouchableOpacity>
+        )}
         <Switch
           style={style.switchMission}
           trackColor={{false: '#ffffff', true: '#ffffff'}}
@@ -65,6 +76,7 @@ function HomeView({navigation, dispatch}) {
 const mapStateToProps = state => {
   return {
     userPseudo: state.userPseudo,
+    // loaded: state.loaded,
   };
 };
 const mapDispatchToProps = dispatch => {

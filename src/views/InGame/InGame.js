@@ -298,6 +298,7 @@ class InGame extends React.Component {
         this.state.victory = true;
         navigate('VictoryView');
       } else if (
+        this.props.mission !== 'solaire' &&
         this.state.inventoryImages.includes(goodObjects[0]) &&
         this.state.inventoryImages.includes(goodObjects[1]) &&
         this.state.inventoryImages.includes(goodObjects[2]) &&

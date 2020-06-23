@@ -28,12 +28,6 @@ function HomeView({navigation, dispatch}) {
     dispatch(mission);
   };
 
-  const clickGo = () => {
-    const {navigate} = this.props.navigation;
-    playGoSound();
-    navigate('LoginView');
-  };
-
   return (
     <View style={style.mainContainer}>
       <RNCamera

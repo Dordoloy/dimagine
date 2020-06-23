@@ -10,6 +10,11 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 35,
   },
+  buttonTextRulesCross: {
+    color: 'red',
+    fontWeight: 'bold',
+    fontSize: 35,
+  },
   backgroundCamera: {
     flex: 1,
     justifyContent: 'flex-end',

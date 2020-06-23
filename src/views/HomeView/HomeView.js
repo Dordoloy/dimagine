@@ -4,7 +4,7 @@ import React, {useState} from 'react';
 import {ActivityIndicator} from 'react-native';
 import style from './style';
 import {connect} from 'react-redux';
-import {playGoSound, playSwitchSound} from '../../Sounds';
+import {playGoSound, playRetrySound, playSwitchSound} from '../../Sounds';
 import {
   socket,
   onOpen,
@@ -12,6 +12,7 @@ import {
   subscribeRoom,
   doMessage,
 } from '_components/Socket/Socket';
+import RulesModal from '../../components/RulesModal/RulesModal';
 
 function HomeView({navigation, dispatch}) {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -29,6 +30,11 @@ function HomeView({navigation, dispatch}) {
   };
 
   const [isRules, setIsRules] = useState(false);
+  const toggleRules = () => {
+    playRetrySound();
+    setIsRules(previousState => !previousState);
+    console.log(isRules);
+  };
 
   return (
     <View style={style.mainContainer}>
@@ -47,13 +53,33 @@ function HomeView({navigation, dispatch}) {
         }}
       />
       <View style={style.goContainer}>
-        <TouchableOpacity
-          style={style.rules}
-          onPress={() => {
-            // navigation.navigate('LoginView');
-          }}>
-          <Text style={style.buttonTextRules}>?</Text>
-        </TouchableOpacity>
+        {isRules ? (
+          <TouchableOpacity
+            style={style.rules}
+            onPress={() => {
+              toggleRules();
+            }}>
+            <Text style={style.buttonTextRulesCross}>X</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={style.rules}
+            onPress={() => {
+              toggleRules();
+            }}>
+            <Text style={style.buttonTextRules}>?</Text>
+          </TouchableOpacity>
+        )}
+
+        {isRules && (
+          <RulesModal
+            message={
+              isEnabled
+                ? 'Trouver toutes les planètes du système solaire !'
+                : "Trouver tout les composants d'un ordinateur !"
+            }
+          />
+        )}
         <Image
           style={style.logoDimagine}
           source={require('assets/images/logo_title_vertical.png')}

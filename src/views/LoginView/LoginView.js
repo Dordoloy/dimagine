@@ -31,7 +31,7 @@ class LoginView extends React.Component {
   loginUser = () => {
     const {navigate} = this.props.navigation;
     addPseudo(this.state.pseudoUser);
-    navigate('InGame');
+    navigate('RoomList');
   };
 
   render() {

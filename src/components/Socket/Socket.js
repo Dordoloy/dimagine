@@ -2,7 +2,7 @@ import {connect} from 'react-redux';
 
 // export const socket = new WebSocket('wss://echo.websocket.org/'); // test de connexion
 
-const socketAdress = 'f718f682ab8c.ngrok.io';
+const socketAdress = '9e998256cfe3.ngrok.io';
 const webSocketAdress = 'wss://' + socketAdress + '/:8080';
 
 export const socket = new WebSocket(webSocketAdress); // ngrok connexion

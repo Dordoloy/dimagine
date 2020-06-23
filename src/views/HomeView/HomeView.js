@@ -28,6 +28,8 @@ function HomeView({navigation, dispatch}) {
     dispatch(mission);
   };
 
+  const [isRules, setIsRules] = useState(false);
+
   return (
     <View style={style.mainContainer}>
       <RNCamera
@@ -45,6 +47,13 @@ function HomeView({navigation, dispatch}) {
         }}
       />
       <View style={style.goContainer}>
+        <TouchableOpacity
+          style={style.rules}
+          onPress={() => {
+            // navigation.navigate('LoginView');
+          }}>
+          <Text style={style.buttonTextRules}>?</Text>
+        </TouchableOpacity>
         <Image
           style={style.logoDimagine}
           source={require('assets/images/logo_title_vertical.png')}

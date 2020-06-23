@@ -1,9 +1,14 @@
 import {StyleSheet} from 'react-native';
 
 export default StyleSheet.create({
-  mainContainer: {
-    // flex: 1,
-    // flexDirection: 'column',
+  rules: {
+    marginTop: 10,
+    marginLeft: '85%',
+  },
+  buttonTextRules: {
+    color: '#ffa500',
+    fontWeight: 'bold',
+    fontSize: 35,
   },
   backgroundCamera: {
     flex: 1,
@@ -25,14 +30,13 @@ export default StyleSheet.create({
     width: '100%',
     height: 150,
     resizeMode: 'contain',
-    marginTop: 50,
+    marginTop: 10,
   },
   button: {
     backgroundColor: 'white',
     padding: 20,
     borderRadius: 50,
     width: 200,
-    // top: '20%',
   },
   buttonText: {
     color: '#ffa500',

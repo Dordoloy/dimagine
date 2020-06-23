@@ -156,6 +156,7 @@ class InGame extends React.Component {
         'LED',
         'Processeur',
         'RAM',
+        'Taser',
       ];
 
       if (this.props.mission === 'solaire') {
@@ -171,6 +172,7 @@ class InGame extends React.Component {
           'Charon',
           'Eris',
           'Sedna',
+          'Taser',
         ];
       }
 
@@ -267,6 +269,8 @@ class InGame extends React.Component {
           this.state.alreadyTaken.push(this.state.scanImage);
           this.incrementScore(50);
           this.state.goodObject += 1;
+        } else if (this.state.scanImage === 'taser') {
+          console.log('test');
         } else if (
           !this.state.alreadyTaken.find(
             element => element === this.state.scanImage,

@@ -49,4 +49,14 @@ export default StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
+  useItem: {
+    position: 'absolute',
+    top: '40%',
+    padding: 5,
+    zIndex: 2000,
+  },
+  useItemText: {
+    borderRadius: 10,
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+  },
 });

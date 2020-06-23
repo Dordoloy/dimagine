@@ -20,27 +20,60 @@ const InventoryModal: React.FC<Props> = props => (
     <View style={style.containerInventory}>
       <View style={style.containeritems}>
         {props.images.map((element, key) => {
-          return (
-            <View style={style.inventoryCase}>
-              <Image
-                style={{width: 100, height: 100}}
-                source={{
-                  uri: `https://raw.githubusercontent.com/Dordoloy/dimagine/master/src/assets/images/${
-                    props.images[key]
-                  }.png`,
-                }}
-              />
-              <TouchableOpacity
-                testID={'close-button'}
-                onPress={() => {
-                  playDeleteSound();
-                  props.images.splice(key, 1);
-                }}
-                title="Close">
-                <Text style={style.crossObject}>X</Text>
-              </TouchableOpacity>
-            </View>
-          );
+          if (element === 'taser') {
+            return (
+              <View style={style.inventoryCase}>
+                <Image
+                  style={{width: 100, height: 100}}
+                  source={{
+                    uri: `https://raw.githubusercontent.com/Dordoloy/dimagine/master/src/assets/images/${
+                      props.images[key]
+                    }.png`,
+                  }}
+                />
+                <TouchableOpacity
+                  testID={'close-button'}
+                  onPress={() => {
+                    playDeleteSound();
+                    props.images.splice(key, 1);
+                  }}
+                  title="Close">
+                  <Text style={style.crossObject}>X</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={style.useItem}
+                  testID={'close-button'}
+                  onPress={() => {
+                    console.log('Use');
+                  }}
+                  title="Close">
+                  <Text style={style.useItemText}>Utiliser</Text>
+                </TouchableOpacity>
+              </View>
+            );
+          } else {
+            return (
+              <View style={style.inventoryCase}>
+                <Image
+                  style={{width: 100, height: 100}}
+                  source={{
+                    uri: `https://raw.githubusercontent.com/Dordoloy/dimagine/master/src/assets/images/${
+                      props.images[key]
+                    }.png`,
+                  }}
+                />
+                <TouchableOpacity
+                  testID={'close-button'}
+                  onPress={() => {
+                    playDeleteSound();
+                    props.images.splice(key, 1);
+                  }}
+                  title="Close">
+                  <Text style={style.crossObject}>X</Text>
+                </TouchableOpacity>
+              </View>
+            );
+          }
         })}
       </View>
     </View>

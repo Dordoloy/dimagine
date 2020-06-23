@@ -68,3 +68,7 @@ export function playThrowSound() {
 export function playWinSound() {
   play('win');
 }
+
+export function playTaserSound() {
+  play('taser');
+}

@@ -5,18 +5,35 @@ import {ActivityIndicator} from 'react-native';
 import style from './style';
 import {connect} from 'react-redux';
 import {playGoSound, playSwitchSound} from '../../Sounds';
+import {
+  socket,
+  onOpen,
+  getList,
+  subscribeRoom,
+  doMessage,
+} from '_components/Socket/Socket';
 
 function HomeView({navigation, dispatch}) {
+  const [isLoaded, setIsLoaded] = useState(false);
+  socket.onopen = () => {
+    console.log('CONNECTED');
+    setIsLoaded(previousState => !previousState);
+  };
+
   const [isEnabled, setIsEnabled] = useState(false);
-  // getList();
-  // subscribeRoom('testroom');
-  // doMessage('coucou les amigos');
   const toggleSwitch = () => {
     playSwitchSound();
     setIsEnabled(previousState => !previousState);
     const mission = {type: 'MISSION', value: isEnabled ? 'pc' : 'solaire'};
     dispatch(mission);
   };
+
+  const clickGo = () => {
+    const {navigate} = this.props.navigation;
+    playGoSound();
+    navigate('LoginView');
+  };
+
   return (
     <View style={style.mainContainer}>
       <RNCamera
@@ -39,15 +56,15 @@ function HomeView({navigation, dispatch}) {
           source={require('assets/images/logo_title_vertical.png')}
         />
         <Text style={style.subTitle}>CHASSE AU TRESOR</Text>
-        <Text>{this.state.loaded}</Text>
+        <Text>{isLoaded}</Text>
 
-        {this.state.loaded === false && (
+        {isLoaded === false && (
           <View>
             <ActivityIndicator size="large" color="#ffa500" />
             <Text style={style.buttonText}>Chargement</Text>
           </View>
         )}
-        {this.state.loaded === true && (
+        {isLoaded === true && (
           <TouchableOpacity
             style={style.button}
             onPress={() => {
@@ -73,12 +90,6 @@ function HomeView({navigation, dispatch}) {
   );
 }
 
-const mapStateToProps = state => {
-  return {
-    userPseudo: state.userPseudo,
-    // loaded: state.loaded,
-  };
-};
 const mapDispatchToProps = dispatch => {
   return {
     dispatch: action => {

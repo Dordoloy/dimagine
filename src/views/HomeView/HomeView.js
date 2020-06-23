@@ -4,7 +4,7 @@ import React, {useState} from 'react';
 import {ActivityIndicator} from 'react-native';
 import style from './style';
 import {connect} from 'react-redux';
-import {playGoSound, playSwitchSound} from '../../Sounds';
+import {playGoSound, playRetrySound, playSwitchSound} from '../../Sounds';
 import {
   socket,
   onOpen,
@@ -12,6 +12,7 @@ import {
   subscribeRoom,
   doMessage,
 } from '_components/Socket/Socket';
+import RulesModal from '../../components/RulesModal/RulesModal';
 
 function HomeView({navigation, dispatch}) {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -26,6 +27,13 @@ function HomeView({navigation, dispatch}) {
     setIsEnabled(previousState => !previousState);
     const mission = {type: 'MISSION', value: isEnabled ? 'pc' : 'solaire'};
     dispatch(mission);
+  };
+
+  const [isRules, setIsRules] = useState(false);
+  const toggleRules = () => {
+    playRetrySound();
+    setIsRules(previousState => !previousState);
+    console.log(isRules);
   };
 
   return (
@@ -45,6 +53,33 @@ function HomeView({navigation, dispatch}) {
         }}
       />
       <View style={style.goContainer}>
+        {isRules ? (
+          <TouchableOpacity
+            style={style.rules}
+            onPress={() => {
+              toggleRules();
+            }}>
+            <Text style={style.buttonTextRulesCross}>X</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={style.rules}
+            onPress={() => {
+              toggleRules();
+            }}>
+            <Text style={style.buttonTextRules}>?</Text>
+          </TouchableOpacity>
+        )}
+
+        {isRules && (
+          <RulesModal
+            message={
+              isEnabled
+                ? 'Trouver toutes les planètes du système solaire !'
+                : "Trouver tout les composants d'un ordinateur !"
+            }
+          />
+        )}
         <Image
           style={style.logoDimagine}
           source={require('assets/images/logo_title_vertical.png')}

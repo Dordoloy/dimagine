@@ -17,9 +17,7 @@ class RoomView extends React.Component {
     super(props);
 
     this.state = {
-      users: '',
-      usersWaiting: [],
-      usersReady: [],
+      users: [],
       refreshUsers: '',
     };
   }
@@ -39,8 +37,16 @@ class RoomView extends React.Component {
   };
 
   updateUserList() {
-    let userList = getRoomPlayers();
-    // this.setState({users: userList});
+    let promise = getRoomPlayers();
+
+    promise.then(value => {
+      const usersString = value.data;
+      const userList = usersString.split(' ');
+      const userListFiltered = userList.filter(item => item);
+
+      // TODO : Fix problem to set state
+      // this.setState({users: userListFiltered});
+    });
   }
 
   stopRefreshUser() {

@@ -19,7 +19,6 @@ class RoomList extends React.Component {
     this.state = {
       rooms: ['Room-1', 'Room-2', 'Room-3'],
       roomName: '',
-      test: 'test1',
     };
   }
 
@@ -28,7 +27,7 @@ class RoomList extends React.Component {
   }
 
   refreshRooms = () => {
-    // TODO : Parse Json
+    // TODO : Parse Json when websocket render aray
     let allRoomsString = getList();
     let allRooms = [];
     if (allRoomsString != undefined) {
@@ -49,7 +48,8 @@ class RoomList extends React.Component {
     subscribeRoom(this.state.roomName);
 
     const {navigate} = this.props.navigation;
-    navigate('InGame');
+    navigate('RoomView');
+    // navigate('InGame');
   };
 
   enterInRoom = room => {
@@ -58,7 +58,8 @@ class RoomList extends React.Component {
       subscribeRoom(this.state.roomName);
 
       const {navigate} = this.props.navigation;
-      navigate('InGame');
+      navigate('RoomView');
+      // navigate('InGame');
     }, 20);
   };
 

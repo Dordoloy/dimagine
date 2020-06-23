@@ -9,6 +9,7 @@ import Store from './redux/reducer/store';
 
 import HomeView from './views/HomeView/HomeView';
 import RoomList from './views/RoomList/RoomList';
+import RoomView from './views/RoomView/RoomView';
 import LoginView from './views/LoginView/LoginView';
 import InGame from './views/InGame/InGame';
 import DefeatView from './views/DefeatView/DefeatView';
@@ -29,6 +30,7 @@ const App: () => React$Node = () => {
           <Stack.Screen name="InGame" component={InGame} />
           <Stack.Screen name="LoginView" component={LoginView} />
           <Stack.Screen name="RoomList" component={RoomList} />
+          <Stack.Screen name="RoomView" component={RoomView} />
           <Stack.Screen name="DefeatView" component={DefeatView} />
           <Stack.Screen name="VictoryView" component={VictoryView} />
         </Stack.Navigator>

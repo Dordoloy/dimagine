@@ -141,7 +141,6 @@ class InGame extends React.Component {
 
         console.log(newBarcode);
 
-        // TODO : Problem to save newBarcode data on state
         this.setState({barcode: newBarcode});
 
         // TODO : Send the tag informations to the websocket and display the received information
@@ -197,6 +196,11 @@ class InGame extends React.Component {
   scanPushed = () => {
     playScanSound();
     this.setState({scanActive: 1});
+
+    setTimeout(() => {
+      this.setState({scanActive: 0});
+    }, 300);
+
     if (this.state.isObjectToScan === 0 && this.state.scanActive === 1) {
       Alert.alert('Rien à scanner ici !');
     }

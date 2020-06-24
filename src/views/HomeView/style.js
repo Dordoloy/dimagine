@@ -51,7 +51,7 @@ export default StyleSheet.create({
   },
   subTitle: {
     fontSize: 30,
-    marginBottom: 150,
+    marginBottom: 75,
   },
   switchMission: {
     marginTop: 40,

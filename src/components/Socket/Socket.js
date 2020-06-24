@@ -2,7 +2,7 @@ import {connect} from 'react-redux';
 
 // export const socket = new WebSocket('wss://echo.websocket.org/'); // test de connexion
 
-const socketAdress = 'f718f682ab8c.ngrok.io';
+const socketAdress = 'b43129c54463.ngrok.io';
 const webSocketAdress = 'wss://' + socketAdress + '/:8080';
 
 export const socket = new WebSocket(webSocketAdress); // ngrok connexion
@@ -30,12 +30,15 @@ export const onError = event => {
 
 export const onSend = message => {
   var strToJson = JSON.stringify(message);
-  // console.log(strToJson);
   socket.send(strToJson);
 
-  socket.onmessage = ({data}) => {
-    console.log(data);
-  };
+  const promise = new Promise((resolve, reject) => {
+    socket.onmessage = ({data}) => {
+      resolve({data});
+    };
+  });
+
+  return promise;
 };
 
 export const addPseudo = pseudoUser => {
@@ -50,7 +53,9 @@ export const getList = () => {
 
 export const getRoomPlayers = () => {
   const roomPlayers = {command: 'roomPlayers'};
-  onSend(roomPlayers);
+
+  let promise = onSend(roomPlayers);
+  return promise;
 };
 
 export const unsubscribeRoom = () => {

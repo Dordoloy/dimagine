@@ -59,7 +59,7 @@ class RoomView extends React.Component {
     const {navigate} = this.props.navigation;
 
     unsubscribeRoom();
-    navigate('LoginView');
+    navigate('RoomList');
   }
 
   render() {
@@ -88,7 +88,11 @@ class RoomView extends React.Component {
           <View style={[style.centeredElements, style.spaceBetween]}>
             <View style={[style.centeredElements, style.listRoomContainer]}>
               <Text style={style.titleMission}>Joueurs</Text>
-              <Text>{this.state.users}</Text>
+              <View style={style.userList}>
+                {this.state.users.map(user => {
+                  return <Text style={style.user}>{user}</Text>;
+                })}
+              </View>
             </View>
             <View style={[style.centeredElements, style.createRoom]}>
               <TouchableOpacity

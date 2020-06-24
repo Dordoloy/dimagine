@@ -133,4 +133,15 @@ export default StyleSheet.create({
     borderRadius: 5,
     marginBottom: 10,
   },
+  userList: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  user: {
+    padding: 10,
+    backgroundColor: 'white',
+    borderRadius: 5,
+    marginLeft: 3,
+    marginRight: 3,
+  },
 });

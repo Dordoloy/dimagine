@@ -24,7 +24,7 @@ const InventoryModal: React.FC<Props> = props => (
             return (
               <View style={style.inventoryCase}>
                 <Image
-                  style={{width: 100, height: 100}}
+                  style={style.objectImages}
                   source={{
                     uri: `https://raw.githubusercontent.com/Dordoloy/dimagine/master/src/assets/images/${
                       props.images[key]
@@ -57,7 +57,7 @@ const InventoryModal: React.FC<Props> = props => (
             return (
               <View style={style.inventoryCase}>
                 <Image
-                  style={{width: 100, height: 100}}
+                  style={style.objectImages}
                   source={{
                     uri: `https://raw.githubusercontent.com/Dordoloy/dimagine/master/src/assets/images/${
                       props.images[key]

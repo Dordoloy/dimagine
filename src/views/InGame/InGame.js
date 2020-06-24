@@ -156,6 +156,8 @@ class InGame extends React.Component {
         'Borne',
       ];
 
+      let badMessageName = ['Arduino', 'LED', 'Taser', 'Borne'];
+
       if (this.props.mission === 'solaire') {
         messageName = [
           'Jupiter',
@@ -172,6 +174,8 @@ class InGame extends React.Component {
           'Taser',
           'Borne',
         ];
+
+        badMessageName = ['Sedna', 'Eris', 'Charon', 'Taser', 'Borne'];
       }
 
       const resultMessageName = messageName.find(
@@ -181,12 +185,32 @@ class InGame extends React.Component {
       if (resultImageName === 'borne') {
         let addPoint =
           50 * (this.state.goodObject - (this.oldGoodObjects || 0));
+
         let removePoint =
           15 *
           (this.state.badObject +
-            (messageName.length - 4 - this.state.goodObject));
+            (messageName.length -
+              badMessageName.length -
+              this.state.goodObject));
+
         this.incrementScore(addPoint - removePoint);
         this.oldGoodObjects = this.state.goodObject;
+        const {navigate} = this.props.navigation;
+        if (
+          this.props.mission === 'solaire' &&
+          this.state.goodObject === messageName.length - badMessageName.length
+        ) {
+          this.state.victory = true;
+          playWinSound();
+          navigate('VictoryView');
+        } else if (
+          this.props.mission !== 'solaire' &&
+          this.state.goodObject === messageName.length - badMessageName.length
+        ) {
+          this.state.victory = true;
+          playWinSound();
+          navigate('VictoryView');
+        }
       } else if (
         messageName &&
         messageName.find(element => `http://${element}` === newBarcode[data])
@@ -236,7 +260,6 @@ class InGame extends React.Component {
   };
 
   addToInventory() {
-    const {navigate} = this.props.navigation;
     let goodObjects = [
       'carte-mere',
       'carte-graphique',
@@ -287,37 +310,6 @@ class InGame extends React.Component {
         this.closeScan();
       } else {
         Alert.alert('', 'Vous possédez déjà cet objet !');
-      }
-
-      console.log(this.state.goodObject);
-      console.log(this.state.badObject);
-
-      if (
-        this.props.mission === 'solaire' &&
-        this.state.inventoryImages.includes(goodObjects[0]) &&
-        this.state.inventoryImages.includes(goodObjects[1]) &&
-        this.state.inventoryImages.includes(goodObjects[2]) &&
-        this.state.inventoryImages.includes(goodObjects[3]) &&
-        this.state.inventoryImages.includes(goodObjects[4]) &&
-        this.state.inventoryImages.includes(goodObjects[5]) &&
-        this.state.inventoryImages.includes(goodObjects[6]) &&
-        this.state.inventoryImages.includes(goodObjects[7])
-      ) {
-        this.state.victory = true;
-        playWinSound();
-        navigate('VictoryView');
-      } else if (
-        this.props.mission !== 'solaire' &&
-        this.state.inventoryImages.includes(goodObjects[0]) &&
-        this.state.inventoryImages.includes(goodObjects[1]) &&
-        this.state.inventoryImages.includes(goodObjects[2]) &&
-        this.state.inventoryImages.includes(goodObjects[3]) &&
-        this.state.inventoryImages.includes(goodObjects[4]) &&
-        this.state.inventoryImages.includes(goodObjects[5])
-      ) {
-        this.state.victory = true;
-        playWinSound();
-        navigate('VictoryView');
       }
     };
   }

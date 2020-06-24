@@ -85,6 +85,17 @@ function HomeView({navigation, dispatch}) {
           source={require('assets/images/logo_title_vertical.png')}
         />
         <Text style={style.subTitle}>CHASSE AU TRESOR</Text>
+        <Switch
+          style={style.switchMission}
+          trackColor={{false: '#ffffff', true: '#ffffff'}}
+          thumbColor={isEnabled ? '#FF901D' : '#FF901D'}
+          ios_backgroundColor="#3e3e3e"
+          onValueChange={toggleSwitch}
+          value={isEnabled}
+        />
+        <Text style={style.switchText}>
+          {isEnabled ? 'Mission "Système solaire"' : 'Mission "PC"'}
+        </Text>
         <Text>{isLoaded}</Text>
 
         {isLoaded === false && (
@@ -103,17 +114,6 @@ function HomeView({navigation, dispatch}) {
             <Text style={style.buttonText}>GO</Text>
           </TouchableOpacity>
         )}
-        <Switch
-          style={style.switchMission}
-          trackColor={{false: '#ffffff', true: '#ffffff'}}
-          thumbColor={isEnabled ? '#FF901D' : '#FF901D'}
-          ios_backgroundColor="#3e3e3e"
-          onValueChange={toggleSwitch}
-          value={isEnabled}
-        />
-        <Text style={style.switchText}>
-          {isEnabled ? 'Mission "Système solaire"' : 'Mission "PC"'}
-        </Text>
       </View>
     </View>
   );

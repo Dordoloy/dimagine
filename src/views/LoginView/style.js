@@ -34,7 +34,7 @@ export default StyleSheet.create({
     padding: 20,
     marginTop: 30,
     marginBottom: 30,
-    borderRadius: 50,
+    borderRadius: 15,
     width: '80%',
     shadowColor: '#000',
     shadowOffset: {

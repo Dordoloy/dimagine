@@ -4,6 +4,7 @@
   - Follow installation intructions of "React-Native CLI Quickstart" on React Native official website to install and configure all dependencies like NodeJS ( >= 8.3), Python2, Jdk8 (development kit Java >= 8).  
   - Get the git on the following link : https://github.com/Dordoloy/dimagine.
   - Run `npm install` to be sure to have all dependencies.
+  - Go on this git, to see how to start the websocket : https://github.com/seb7474/WebSocket.
 
 ## **Execution :** 
   - Open a terminal in the application folder,

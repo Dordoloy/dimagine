@@ -1,7 +1,6 @@
-import {connect} from 'react-redux';
-
 // export const socket = new WebSocket('wss://echo.websocket.org/'); // test de connexion
-const socketAdress = 'f718f682ab8c.ngrok.io';
+
+const socketAdress = '3cdc30f37b38.ngrok.io';
 const webSocketAdress = 'wss://' + socketAdress + '/:8080';
 
 export const socket = new WebSocket(webSocketAdress); // ngrok connexion
@@ -41,7 +40,10 @@ export const onSend = message => {
 };
 
 export const addPseudo = pseudoUser => {
-  let newPseudo = {command: 'pseudo', pseudo: pseudoUser};
+  let cleanPseudoUser = pseudoUser;
+  cleanPseudoUser = cleanPseudoUser.replace(/[^\w\s]/gi, '');
+  cleanPseudoUser = cleanPseudoUser.replace(/\s/g, '-');
+  let newPseudo = {command: 'pseudo', pseudo: cleanPseudoUser};
   onSend(newPseudo);
 };
 
@@ -71,20 +73,3 @@ export const subscribeRoom = room => {
   let subscribeRoom = {command: 'subscribe', channel: room};
   onSend(subscribeRoom);
 };
-
-// const mapStateToProps = state => {
-//   return {
-//     loaded: state.loaded,
-//   };
-// };
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     dispatch: action => {
-//       dispatch(action);
-//     },
-//   };
-// };
-// export default connect(
-//   mapStateToProps,
-//   mapDispatchToProps,
-// )(onOpen);

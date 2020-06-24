@@ -31,10 +31,21 @@ export default StyleSheet.create({
     width: 150,
     overflow: 'hidden',
     justifyContent: 'center',
+    marginBottom: 2,
+  },
+  objectImages: {
+    width: 100,
+    height: 100,
+    resizeMode: 'cover',
   },
   crossObject: {
     fontSize: 30,
-    color: 'red',
+    color: 'white',
+    backgroundColor: 'rgba(0,0,0,0.2)',
+    width: 40,
+    height: 40,
+    borderRadius: 50,
+    paddingLeft: 10,
   },
   containerInventory: {
     width: 300,

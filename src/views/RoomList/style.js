@@ -31,6 +31,7 @@ export default StyleSheet.create({
     width: '100%',
   },
   titleMission: {
+    color: '#ffa500',
     fontWeight: 'bold',
     textAlign: 'center',
     fontSize: 25,
@@ -38,7 +39,7 @@ export default StyleSheet.create({
     padding: 20,
     marginTop: 30,
     marginBottom: 30,
-    borderRadius: 50,
+    borderRadius: 15,
     width: '80%',
     shadowColor: '#000',
     shadowOffset: {
@@ -52,9 +53,9 @@ export default StyleSheet.create({
   },
   modalChoosePseudo: {
     alignItems: 'center',
-    backgroundColor: 'white',
+    backgroundColor: 'rgba(255,255,255,0.5)',
     borderRadius: 15,
-    padding: 10,
+    padding: 15,
     width: '100%',
   },
   modaltitle: {
@@ -67,7 +68,7 @@ export default StyleSheet.create({
     padding: 20,
     borderRadius: 50,
     borderWidth: 2,
-    borderColor: 'black',
+    borderColor: 'white',
     width: 200,
     marginBottom: 20,
     textAlign: 'center',
@@ -128,7 +129,9 @@ export default StyleSheet.create({
   roomBtn: {
     width: '100%',
     textAlign: 'center',
-    backgroundColor: 'white',
+    color: 'black',
+    fontWeight: 'bold',
+    backgroundColor: 'rgba(255,255,255,0.5)',
     padding: 15,
     borderRadius: 5,
     marginBottom: 10,

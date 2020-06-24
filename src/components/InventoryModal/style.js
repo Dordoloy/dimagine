@@ -52,11 +52,12 @@ export default StyleSheet.create({
   useItem: {
     position: 'absolute',
     top: '40%',
-    padding: 5,
     zIndex: 2000,
   },
   useItemText: {
     borderRadius: 10,
-    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    padding: 5,
+    color: 'white',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
   },
 });

@@ -35,10 +35,11 @@ export default StyleSheet.create({
     textAlign: 'center',
     fontSize: 25,
     backgroundColor: 'white',
+    color: '#ffa500',
     padding: 20,
     marginTop: 30,
     marginBottom: 30,
-    borderRadius: 50,
+    borderRadius: 15,
     width: '80%',
     shadowColor: '#000',
     shadowOffset: {

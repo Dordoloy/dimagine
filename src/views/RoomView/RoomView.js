@@ -33,7 +33,9 @@ class RoomView extends React.Component {
   }
 
   refreshUser = () => {
-    this.setState({refreshUsers: setInterval(this.updateUserList, 1000)});
+    this.setState({
+      refreshUsers: setInterval(this.updateUserList.bind(this), 1000),
+    });
   };
 
   updateUserList() {
@@ -44,8 +46,7 @@ class RoomView extends React.Component {
       const userList = usersString.split(' ');
       const userListFiltered = userList.filter(item => item);
 
-      // TODO : Fix problem to set state
-      // this.setState({users: userListFiltered});
+      this.setState({users: userListFiltered});
     });
   }
 
@@ -87,6 +88,7 @@ class RoomView extends React.Component {
           <View style={[style.centeredElements, style.spaceBetween]}>
             <View style={[style.centeredElements, style.listRoomContainer]}>
               <Text style={style.titleMission}>Joueurs</Text>
+              <Text>{this.state.users}</Text>
             </View>
             <View style={[style.centeredElements, style.createRoom]}>
               <TouchableOpacity

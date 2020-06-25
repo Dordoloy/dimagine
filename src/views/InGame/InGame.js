@@ -29,7 +29,7 @@ class InGame extends React.Component {
     this.state = {
       barcode: [(id = 0), (data = '')],
       scanActive: 0,
-      score: 500,
+      score: 0,
       increaseScore: 0,
       decreaseScore: 0,
       clue: false,
@@ -59,6 +59,7 @@ class InGame extends React.Component {
   }
 
   componentDidMount() {
+    this.incrementScore(500);
     const actionScore = {type: 'SCORE', value: 0};
     const actionIncreaseScore = {
       type: 'INCREASE_SCORE',
@@ -74,8 +75,10 @@ class InGame extends React.Component {
     const {navigate} = this.props.navigation;
     setInterval(() => {
       if (this.timerRef.current) {
-        this.setState({timer: this.timerRef.current.timerToTime()});
-        this.incrementScore(-1);
+        if (!this.state.victory) {
+          this.setState({timer: this.timerRef.current.timerToTime()});
+          this.incrementScore(-1);
+        }
         if (this.state.timer === '00:00' && !this.state.victory) {
           navigate('DefeatView');
         }

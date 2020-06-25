@@ -21,7 +21,7 @@ const InventoryModal: React.FC<Props> = props => (
     </TouchableOpacity>
     <Text style={style.contentTitle}>Inventaire</Text>
     <View style={style.containerInventory}>
-      <View style={style.containeritems}>
+      <View style={style.containerItems}>
         {props.images.map((element, key) => {
           if (element === 'taser') {
             return (

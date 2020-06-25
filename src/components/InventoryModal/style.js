@@ -54,7 +54,7 @@ export default StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
   },
-  containeritems: {
+  containerItems: {
     width: '100%',
     display: 'flex',
     flexDirection: 'row',
@@ -63,6 +63,7 @@ export default StyleSheet.create({
   useItem: {
     position: 'absolute',
     top: '40%',
+    left: 30,
     zIndex: 2000,
   },
   useItemText: {

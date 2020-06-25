@@ -195,15 +195,12 @@ class InGame extends React.Component {
       );
       const resultImageName = resultMessageName?.toLowerCase();
       if (resultImageName === 'nfcscanborne') {
-        this.openScore();
-        this.oldGoodObjects = this.state.goodInventory.length;
         let addPoint =
           50 *
           (this.state.goodInventory.length -
             (this.state.countInventoryValidate !== 0
               ? this.oldGoodObjects
               : 0));
-
         let removePoint =
           15 *
           (this.state.badInventory.length +
@@ -211,8 +208,10 @@ class InGame extends React.Component {
               badMessageName.length -
               this.state.goodInventory.length));
 
+        this.oldGoodObjects = this.state.goodInventory.length;
         this.state.countInventoryValidate += 1;
-        this.incrementScore(addPoint - removePoint);
+        this.incrementScore(addPoint);
+        this.incrementScore(-removePoint);
         const {navigate} = this.props.navigation;
         if (
           this.state.goodInventory.length ===
@@ -222,6 +221,9 @@ class InGame extends React.Component {
           this.state.victory = true;
           playWinSound();
           navigate('VictoryView');
+        }
+        if (!this.state.victory) {
+          this.openScore();
         }
       } else if (
         messageName &&
@@ -245,6 +247,7 @@ class InGame extends React.Component {
 
   incrementScore = value => {
     let newScore = this.state.score + value;
+    this.state.score += value;
     const actionScore = {type: 'SCORE', value: newScore};
     if (value > 0) {
       this.state.increaseScore += value;

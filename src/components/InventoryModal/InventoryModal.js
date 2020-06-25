@@ -6,6 +6,9 @@ import {playDeleteSound, playTaserSound} from '../../Sounds';
 type Props = {
   onPress: () => any,
   images: [],
+  goodInventory: [],
+  badInventory: [],
+  badObjects: [],
 };
 
 const InventoryModal: React.FC<Props> = props => (
@@ -69,6 +72,11 @@ const InventoryModal: React.FC<Props> = props => (
                   onPress={() => {
                     playDeleteSound();
                     props.images.splice(key, 1);
+                    if (props.badInventory.find(e => e === element)) {
+                      props.badInventory.splice(0, 1);
+                    } else {
+                      props.goodInventory.splice(0, 1);
+                    }
                   }}
                   title="Close">
                   <Text style={style.crossObject}>X</Text>

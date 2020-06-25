@@ -9,14 +9,6 @@ import InventoryModal from '../../components/InventoryModal/InventoryModal';
 import Timer from '../../components/Timer/Timer';
 import {connect} from 'react-redux';
 import {
-  socket,
-  onOpen,
-  onClose,
-  onError,
-  onSend,
-  onMessage,
-} from '_components/Socket/Socket';
-import {
   playInventorySound,
   playScanSound,
   playClueSound,
@@ -25,6 +17,7 @@ import {
   playThrowSound,
   playModalSound,
 } from '../../Sounds';
+import ScoreModal from '../../components/ScoreModal/ScoreModal';
 
 const TIMER_BASE = 500;
 
@@ -36,7 +29,6 @@ class InGame extends React.Component {
     this.state = {
       barcode: [(id = 0), (data = '')],
       scanActive: 0,
-      isObjectToScan: 0,
       score: 0,
       increaseScore: 0,
       decreaseScore: 0,
@@ -49,11 +41,20 @@ class InGame extends React.Component {
       scanVisible: false,
       scanImage: '',
       scanMessage: '',
+      scoreModalVisible: false,
       timer: TIMER_BASE,
       victory: false,
       goodObject: 0,
+      oldGoodObjects: 0,
+      goodInventory: [],
       badObject: 0,
+      badObjects:
+        this.props.mission === 'solaire'
+          ? ['Sedna', 'Eris', 'Charon']
+          : ['Arduino', 'LED'],
+      badInventory: [],
       alreadyTaken: [],
+      countInventoryValidate: 0,
     };
   }
 
@@ -84,6 +85,12 @@ class InGame extends React.Component {
   openScan = () => this.setState({scanVisible: true});
   closeScan = () => this.setState({scanVisible: false});
   isVisibleScan = () => this.state.scanVisible;
+
+  openScore = () => {
+    this.state.scoreModalVisible = true;
+  };
+  closeScore = () => this.setState({scoreModalVisible: false});
+  isVisibleScore = () => this.state.scoreModalVisible;
 
   openInventory = () => this.setState({inventory: true});
   closeInventory = () => {
@@ -139,8 +146,6 @@ class InGame extends React.Component {
         newBarcode[data] = barcode.data;
         newBarcode[id] = 5;
 
-        console.log(newBarcode);
-
         this.setState({barcode: newBarcode});
 
         // TODO : Send the tag informations to the websocket and display the received information
@@ -156,7 +161,10 @@ class InGame extends React.Component {
         'Processeur',
         'RAM',
         'Taser',
+        'NfcScanBorne',
       ];
+
+      let badMessageName = ['Arduino', 'LED', 'Taser', 'NfcScanBorne'];
 
       if (this.props.mission === 'solaire') {
         messageName = [
@@ -172,38 +180,63 @@ class InGame extends React.Component {
           'Eris',
           'Sedna',
           'Taser',
+          'NfcScanBorne',
         ];
+
+        badMessageName = ['Sedna', 'Eris', 'Charon', 'Taser', 'NfcScanBorne'];
       }
 
       const resultMessageName = messageName.find(
         element => `http://${element}` === newBarcode[data],
       );
       const resultImageName = resultMessageName?.toLowerCase();
-      if (
+      if (resultImageName === 'nfcscanborne') {
+        this.openScore();
+        this.oldGoodObjects = this.state.goodInventory.length;
+        let addPoint =
+          50 *
+          (this.state.goodInventory.length -
+            (this.state.countInventoryValidate !== 0
+              ? this.oldGoodObjects
+              : 0));
+
+        let removePoint =
+          15 *
+          (this.state.badInventory.length +
+            (messageName.length -
+              badMessageName.length -
+              this.state.goodInventory.length));
+
+        this.state.countInventoryValidate += 1;
+        this.incrementScore(addPoint - removePoint);
+        const {navigate} = this.props.navigation;
+        if (
+          this.state.goodInventory.length ===
+            messageName.length - badMessageName.length &&
+          this.state.badInventory.length === 0
+        ) {
+          this.state.victory = true;
+          playWinSound();
+          navigate('VictoryView');
+        }
+      } else if (
         messageName &&
         messageName.find(element => `http://${element}` === newBarcode[data])
       ) {
         this.openScan();
         this.state.scanMessage = resultMessageName;
-        console.log(this.state.scanMessage);
         this.state.scanImage = resultImageName.replace(/\s/g, '-');
-      } else {
-        Alert.alert('Rien à scanner ici !');
       }
     }
   };
 
   scanPushed = () => {
     playScanSound();
-    this.setState({scanActive: 1});
+    this.state.scanActive = 1;
 
     setTimeout(() => {
       this.setState({scanActive: 0});
     }, 300);
-
-    if (this.state.isObjectToScan === 0 && this.state.scanActive === 1) {
-      Alert.alert('Rien à scanner ici !');
-    }
   };
 
   incrementScore = value => {
@@ -234,7 +267,6 @@ class InGame extends React.Component {
   };
 
   addToInventory() {
-    const {navigate} = this.props.navigation;
     let goodObjects = [
       'carte-mere',
       'carte-graphique',
@@ -265,56 +297,33 @@ class InGame extends React.Component {
         this.state.inventoryImages.push(this.state.scanImage);
         if (
           goodObjects &&
-          goodObjects.find(element => element === this.state.scanImage) &&
-          !this.state.alreadyTaken.find(
-            element => element === this.state.scanImage,
-          )
+          goodObjects.find(element => element === this.state.scanImage)
         ) {
-          this.state.alreadyTaken.push(this.state.scanImage);
-          this.incrementScore(50);
-          this.state.goodObject += 1;
+          this.state.goodInventory.push(this.state.scanImage);
+          if (
+            !this.state.alreadyTaken.find(
+              element => element === this.state.scanImage,
+            )
+          ) {
+            this.state.alreadyTaken.push(this.state.scanImage);
+            this.state.goodObject += 1;
+          }
         } else if (this.state.scanImage === 'taser') {
-          console.log('test');
-        } else if (
-          !this.state.alreadyTaken.find(
-            element => element === this.state.scanImage,
-          )
-        ) {
-          this.state.alreadyTaken.push(this.state.scanImage);
-          this.incrementScore(-75);
-          this.state.badObject += 1;
+          console.log('taser');
+        } else {
+          this.state.badInventory.push(this.state.scanImage);
+          if (
+            !this.state.alreadyTaken.find(
+              element => element === this.state.scanImage,
+            )
+          ) {
+            this.state.alreadyTaken.push(this.state.scanImage);
+            this.state.badObject += 1;
+          }
         }
         this.closeScan();
       } else {
         Alert.alert('', 'Vous possédez déjà cet objet !');
-      }
-
-      if (
-        this.props.mission === 'solaire' &&
-        this.state.inventoryImages.includes(goodObjects[0]) &&
-        this.state.inventoryImages.includes(goodObjects[1]) &&
-        this.state.inventoryImages.includes(goodObjects[2]) &&
-        this.state.inventoryImages.includes(goodObjects[3]) &&
-        this.state.inventoryImages.includes(goodObjects[4]) &&
-        this.state.inventoryImages.includes(goodObjects[5]) &&
-        this.state.inventoryImages.includes(goodObjects[6]) &&
-        this.state.inventoryImages.includes(goodObjects[7])
-      ) {
-        this.state.victory = true;
-        playWinSound();
-        navigate('VictoryView');
-      } else if (
-        this.props.mission !== 'solaire' &&
-        this.state.inventoryImages.includes(goodObjects[0]) &&
-        this.state.inventoryImages.includes(goodObjects[1]) &&
-        this.state.inventoryImages.includes(goodObjects[2]) &&
-        this.state.inventoryImages.includes(goodObjects[3]) &&
-        this.state.inventoryImages.includes(goodObjects[4]) &&
-        this.state.inventoryImages.includes(goodObjects[5])
-      ) {
-        this.state.victory = true;
-        playWinSound();
-        navigate('VictoryView');
       }
     };
   }
@@ -408,6 +417,23 @@ class InGame extends React.Component {
               <InventoryModal
                 onPress={this.closeInventory}
                 images={this.state.inventoryImages}
+                goodInventory={this.state.goodInventory}
+                badInventory={this.state.badInventory}
+              />
+            </Modal>
+          )}
+          {this.state.scoreModalVisible && (
+            <Modal testID={'modal'} isVisible={this.state.scoreModalVisible}>
+              <ScoreModal
+                onPress={this.closeScore}
+                goodObjects={this.state.goodInventory.length}
+                badObjects={this.state.badInventory.length}
+                missingObjects={
+                  this.props.mission === 'solaire'
+                    ? 8 - this.state.goodInventory.length
+                    : 6 - this.state.goodInventory.length
+                }
+                BadObjectslist={this.state.badObjects}
               />
             </Modal>
           )}

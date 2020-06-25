@@ -1,31 +1,38 @@
 //export const socket = new WebSocket('wss://echo.websocket.org/'); // test de connexion
-import io from "socket.io-client";
+import React from 'react';
 
-//const socketAdress = '3cdc30f37b38.ngrok.io';
-const socketAdr = "d6a8cf3375d9.ngrok.io"; //websocket de romain
-const webSocketAdress = 'wss://' + socketAdr + '/:8080';
-//export const socket = new WebSocket(webSocketAdress); // ngrok connexion
+import io from 'socket.io-client/dist/socket.io';
+ // note the /dist/ subdirectory (socket.io-client v.2.1.1)!
+export const webSocketAdress = "f718f682ab8c"
+export const socket = new WebSocket("http://f718f682ab8c.ngrok.io:3000");
 
+export const connectionConfig = {
 
-export const socket = io(webSocketAdress);
-export const onOpen = () => {
-  socket.on('connection', () => console.log('connected'));
-  console.log('connected');
+  /*jsonp: false,
+  reconnection: true,
+  reconnectionDelay: 100,
+  reconnectionAttempts: 100000,
+  transports: ['websocket']*/
 }
+//export const socket = io('http://25deea24db4e.ngrok.io:3000', connectionConfig);
+  /*socket = io('http://25deea24db4e.ngrok.io:3000', {
+  
+});*/
+
 
 //socket.on('error', console.error)
 //socket.on('connect_error', console.error)
 
-/*export const onOpen = () => {
+export const onOpen = () => {
   socket.onopen = () => {
     console.log('CONNECTED');
     const action = {type: 'LOADED_APP', value: true};
     dispatch(action);
   };
-};*/
+};
 
 export const onClose = () => {
-  socket.close();
+  socket.on('disconnect', () => console.log('deconnected'));
   console.log('DISCONNECTED');
 };
 

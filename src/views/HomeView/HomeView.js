@@ -16,7 +16,7 @@ import RulesModal from '../../components/RulesModal/RulesModal';
 
 function HomeView({navigation, dispatch}) {
   const [isLoaded, setIsLoaded] = useState(false);
-  socket.onopen = () => {
+  socket.onOpen = () => {
     console.log('CONNECTED');
     setIsLoaded(previousState => !previousState);
   };

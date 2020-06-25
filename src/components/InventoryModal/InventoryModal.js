@@ -72,7 +72,16 @@ const InventoryModal: React.FC<Props> = props => (
                   onPress={() => {
                     playDeleteSound();
                     props.images.splice(key, 1);
-                    if (props.badInventory.find(e => e === element)) {
+                    if (
+                      props.badInventory.find(
+                        e =>
+                          e === 'arduino' ||
+                          e === 'led' ||
+                          e === 'eris' ||
+                          e === 'charon' ||
+                          e === 'sedna',
+                      )
+                    ) {
                       props.badInventory.splice(0, 1);
                     } else {
                       props.goodInventory.splice(0, 1);

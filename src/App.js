@@ -6,7 +6,6 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {Provider} from 'react-redux';
 import Store from './redux/reducer/store';
-
 import HomeView from './views/HomeView/HomeView';
 import RoomList from './views/RoomList/RoomList';
 import RoomView from './views/RoomView/RoomView';
@@ -15,8 +14,10 @@ import InGame from './views/InGame/InGame';
 import DefeatView from './views/DefeatView/DefeatView';
 import VictoryView from './views/VictoryView/VictoryView';
 
+
 const Stack = createStackNavigator();
 console.disableYellowBox = true;
+
 const App: () => React$Node = () => {
   return (
     <Provider store={Store}>

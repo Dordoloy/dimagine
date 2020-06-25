@@ -17,6 +17,7 @@ import {
   playThrowSound,
   playModalSound,
 } from '../../Sounds';
+import ScoreModal from '../../components/ScoreModal/ScoreModal';
 
 const TIMER_BASE = 500;
 
@@ -28,7 +29,6 @@ class InGame extends React.Component {
     this.state = {
       barcode: [(id = 0), (data = '')],
       scanActive: 0,
-      isObjectToScan: 0,
       score: 0,
       increaseScore: 0,
       decreaseScore: 0,
@@ -41,12 +41,20 @@ class InGame extends React.Component {
       scanVisible: false,
       scanImage: '',
       scanMessage: '',
+      scoreModalVisible: false,
       timer: TIMER_BASE,
       victory: false,
       goodObject: 0,
       oldGoodObjects: 0,
+      goodInventory: [],
       badObject: 0,
+      badObjects:
+        this.props.mission === 'solaire'
+          ? ['Sedna', 'Eris', 'Charon']
+          : ['Arduino', 'LED'],
+      badInventory: [],
       alreadyTaken: [],
+      countInventoryValidate: 0,
     };
   }
 
@@ -77,6 +85,12 @@ class InGame extends React.Component {
   openScan = () => this.setState({scanVisible: true});
   closeScan = () => this.setState({scanVisible: false});
   isVisibleScan = () => this.state.scanVisible;
+
+  openScore = () => {
+    this.state.scoreModalVisible = true;
+  };
+  closeScore = () => this.setState({scoreModalVisible: false});
+  isVisibleScore = () => this.state.scoreModalVisible;
 
   openInventory = () => this.setState({inventory: true});
   closeInventory = () => {
@@ -123,10 +137,6 @@ class InGame extends React.Component {
   };
   isVisibleClue = () => this.state.clue;
 
-  objectToScan = () => {
-    this.state.isObjectToScan = 1;
-  };
-
   barcodeRecognized = ({barcodes}) => {
     if (this.state.scanActive === 1) {
       this.setState({scanActive: 0});
@@ -135,8 +145,6 @@ class InGame extends React.Component {
       barcodes.forEach(barcode => {
         newBarcode[data] = barcode.data;
         newBarcode[id] = 5;
-
-        console.log(newBarcode);
 
         this.setState({barcode: newBarcode});
 
@@ -153,10 +161,10 @@ class InGame extends React.Component {
         'Processeur',
         'RAM',
         'Taser',
-        'Borne',
+        'NfcScanBorne',
       ];
 
-      let badMessageName = ['Arduino', 'LED', 'Taser', 'Borne'];
+      let badMessageName = ['Arduino', 'LED', 'Taser', 'NfcScanBorne'];
 
       if (this.props.mission === 'solaire') {
         messageName = [
@@ -172,40 +180,40 @@ class InGame extends React.Component {
           'Eris',
           'Sedna',
           'Taser',
-          'Borne',
+          'NfcScanBorne',
         ];
 
-        badMessageName = ['Sedna', 'Eris', 'Charon', 'Taser', 'Borne'];
+        badMessageName = ['Sedna', 'Eris', 'Charon', 'Taser', 'NfcScanBorne'];
       }
 
       const resultMessageName = messageName.find(
         element => `http://${element}` === newBarcode[data],
       );
       const resultImageName = resultMessageName?.toLowerCase();
-      if (resultImageName === 'borne') {
+      if (resultImageName === 'nfcscanborne') {
+        this.openScore();
+        this.oldGoodObjects = this.state.goodInventory.length;
         let addPoint =
-          50 * (this.state.goodObject - (this.oldGoodObjects || 0));
+          50 *
+          (this.state.goodInventory.length -
+            (this.state.countInventoryValidate !== 0
+              ? this.oldGoodObjects
+              : 0));
 
         let removePoint =
           15 *
-          (this.state.badObject +
+          (this.state.badInventory.length +
             (messageName.length -
               badMessageName.length -
-              this.state.goodObject));
+              this.state.goodInventory.length));
 
+        this.state.countInventoryValidate += 1;
         this.incrementScore(addPoint - removePoint);
-        this.oldGoodObjects = this.state.goodObject;
         const {navigate} = this.props.navigation;
         if (
-          this.props.mission === 'solaire' &&
-          this.state.goodObject === messageName.length - badMessageName.length
-        ) {
-          this.state.victory = true;
-          playWinSound();
-          navigate('VictoryView');
-        } else if (
-          this.props.mission !== 'solaire' &&
-          this.state.goodObject === messageName.length - badMessageName.length
+          this.state.goodInventory.length ===
+            messageName.length - badMessageName.length &&
+          this.state.badInventory.length === 0
         ) {
           this.state.victory = true;
           playWinSound();
@@ -217,7 +225,6 @@ class InGame extends React.Component {
       ) {
         this.openScan();
         this.state.scanMessage = resultMessageName;
-        console.log(this.state.scanMessage);
         this.state.scanImage = resultImageName.replace(/\s/g, '-');
       }
     }
@@ -290,22 +297,29 @@ class InGame extends React.Component {
         this.state.inventoryImages.push(this.state.scanImage);
         if (
           goodObjects &&
-          goodObjects.find(element => element === this.state.scanImage) &&
-          !this.state.alreadyTaken.find(
-            element => element === this.state.scanImage,
-          )
+          goodObjects.find(element => element === this.state.scanImage)
         ) {
-          this.state.alreadyTaken.push(this.state.scanImage);
-          this.state.goodObject += 1;
+          this.state.goodInventory.push(this.state.scanImage);
+          if (
+            !this.state.alreadyTaken.find(
+              element => element === this.state.scanImage,
+            )
+          ) {
+            this.state.alreadyTaken.push(this.state.scanImage);
+            this.state.goodObject += 1;
+          }
         } else if (this.state.scanImage === 'taser') {
           console.log('taser');
-        } else if (
-          !this.state.alreadyTaken.find(
-            element => element === this.state.scanImage,
-          )
-        ) {
-          this.state.alreadyTaken.push(this.state.scanImage);
-          this.state.badObject += 1;
+        } else {
+          this.state.badInventory.push(this.state.scanImage);
+          if (
+            !this.state.alreadyTaken.find(
+              element => element === this.state.scanImage,
+            )
+          ) {
+            this.state.alreadyTaken.push(this.state.scanImage);
+            this.state.badObject += 1;
+          }
         }
         this.closeScan();
       } else {
@@ -403,6 +417,23 @@ class InGame extends React.Component {
               <InventoryModal
                 onPress={this.closeInventory}
                 images={this.state.inventoryImages}
+                goodInventory={this.state.goodInventory}
+                badInventory={this.state.badInventory}
+              />
+            </Modal>
+          )}
+          {this.state.scoreModalVisible && (
+            <Modal testID={'modal'} isVisible={this.state.scoreModalVisible}>
+              <ScoreModal
+                onPress={this.closeScore}
+                goodObjects={this.state.goodInventory.length}
+                badObjects={this.state.badInventory.length}
+                missingObjects={
+                  this.props.mission === 'solaire'
+                    ? 8 - this.state.goodInventory.length
+                    : 6 - this.state.goodInventory.length
+                }
+                BadObjectslist={this.state.badObjects}
               />
             </Modal>
           )}

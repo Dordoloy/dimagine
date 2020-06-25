@@ -1,6 +1,6 @@
 // export const socket = new WebSocket('wss://echo.websocket.org/'); // test de connexion
 
-const socketAdress = 'f718f682ab8c.ngrok.io';
+const socketAdress = 'd6a8cf3375d9.ngrok.io';
 const webSocketAdress = 'wss://' + socketAdress + '/:8080';
 
 export const socket = new WebSocket(webSocketAdress); // ngrok connexion

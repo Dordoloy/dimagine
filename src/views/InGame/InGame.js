@@ -59,7 +59,7 @@ class InGame extends React.Component {
   }
 
   componentDidMount() {
-    this.incrementScore(500);
+    this.incrementScore(TIMER_BASE);
     const actionScore = {type: 'SCORE', value: 0};
     const actionIncreaseScore = {
       type: 'INCREASE_SCORE',

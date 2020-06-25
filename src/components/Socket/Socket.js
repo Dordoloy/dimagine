@@ -1,17 +1,45 @@
 // export const socket = new WebSocket('wss://echo.websocket.org/'); // test de connexion
-
+import openSocket from 'socket.io-client';
 const socketAdress = '3cdc30f37b38.ngrok.io';
 const webSocketAdress = 'wss://' + socketAdress + '/:8080';
 
 export const socket = new WebSocket(webSocketAdress); // ngrok connexion
 
+
+export const onOpen = () => {
+  socket = io.connect(webSocketAdress, {
+    transport: ['websocket'],
+    reconnectionAttempts: 3
+  });
+
+  state = {
+    connected: false
+  };
+
+  componentDidMount() {
+    this.onConnectSocket();
+  }
+
+  onConnectSocket = () => {
+    if(this.socket) {
+      this.socket.on('connect', () => {
+        this.socket.emit('CONNECTED');
+
+        this.setState({
+          connected: true
+        });
+      });
+    }
+  }
+}
+/*
 export const onOpen = () => {
   socket.onopen = () => {
     console.log('CONNECTED');
     const action = {type: 'LOADED_APP', value: true};
     // dispatch(action);
   };
-};
+};*/
 
 export const onClose = () => {
   socket.close();

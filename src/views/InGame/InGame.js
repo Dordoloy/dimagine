@@ -82,6 +82,11 @@ class InGame extends React.Component {
         }
         if (this.state.timer === '00:00' && !this.state.victory) {
           this.state.defeat = true;
+          const actionIncreaseScoreD = {
+            type: 'INCREASE_SCORE',
+            value: this.state.increaseScore,
+          };
+          this.props.dispatch(actionIncreaseScoreD);
           navigate('DefeatView');
         }
       }

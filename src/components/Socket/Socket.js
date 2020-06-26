@@ -8,8 +8,6 @@ export const socket = new WebSocket(webSocketAdress); // ngrok connexion
 export const onOpen = () => {
   socket.onopen = () => {
     console.log('CONNECTED');
-    const action = {type: 'LOADED_APP', value: true};
-    // dispatch(action);
   };
 };
 

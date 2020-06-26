@@ -202,28 +202,29 @@ class InGame extends React.Component {
       );
       const resultImageName = resultMessageName?.toLowerCase();
       if (resultImageName === 'nfcscanborne') {
+        const goodInventoryLength = this.state.goodInventory.length;
+        const badInventoryLength = this.state.badInventory.length;
+
+        this.oldGoodObjects = goodInventoryLength;
         let addPoint =
           50 *
-          (this.state.goodInventory.length -
+          (goodInventoryLength -
             (this.state.countInventoryValidate !== 0
               ? this.oldGoodObjects
               : 0));
         let removePoint =
           15 *
-          (this.state.badInventory.length +
-            (messageName.length -
-              badMessageName.length -
-              this.state.goodInventory.length));
+          (badInventoryLength +
+            (messageName.length - badMessageName.length - goodInventoryLength));
 
-        this.oldGoodObjects = this.state.goodInventory.length;
         this.state.countInventoryValidate += 1;
         this.incrementScore(addPoint);
         this.incrementScore(-removePoint);
+
         const {navigate} = this.props.navigation;
         if (
-          this.state.goodInventory.length ===
-            messageName.length - badMessageName.length &&
-          this.state.badInventory.length === 0
+          goodInventoryLength === messageName.length - badMessageName.length &&
+          badInventoryLength === 0
         ) {
           this.state.victory = true;
           playWinSound();
@@ -303,35 +304,25 @@ class InGame extends React.Component {
     }
     return () => {
       playDeleteSound();
+      const scanImage = this.state.scanImage;
+      const alreadyTaken = this.state.alreadyTaken;
       if (
-        this.state.inventoryImages.find(
-          element => element === this.state.scanImage,
-        ) === undefined
+        this.state.inventoryImages.find(element => element === scanImage) ===
+        undefined
       ) {
-        this.state.inventoryImages.push(this.state.scanImage);
-        if (
-          goodObjects &&
-          goodObjects.find(element => element === this.state.scanImage)
-        ) {
-          this.state.goodInventory.push(this.state.scanImage);
-          if (
-            !this.state.alreadyTaken.find(
-              element => element === this.state.scanImage,
-            )
-          ) {
-            this.state.alreadyTaken.push(this.state.scanImage);
+        this.state.inventoryImages.push(scanImage);
+        if (goodObjects && goodObjects.find(element => element === scanImage)) {
+          this.state.goodInventory.push(scanImage);
+          if (!alreadyTaken.find(element => element === scanImage)) {
+            alreadyTaken.push(scanImage);
             this.state.goodObject += 1;
           }
-        } else if (this.state.scanImage === 'taser') {
+        } else if (scanImage === 'taser') {
           console.log('taser');
         } else {
-          this.state.badInventory.push(this.state.scanImage);
-          if (
-            !this.state.alreadyTaken.find(
-              element => element === this.state.scanImage,
-            )
-          ) {
-            this.state.alreadyTaken.push(this.state.scanImage);
+          this.state.badInventory.push(scanImage);
+          if (!alreadyTaken.find(element => element === scanImage)) {
+            alreadyTaken.push(scanImage);
             this.state.badObject += 1;
           }
         }
@@ -343,6 +334,8 @@ class InGame extends React.Component {
   }
 
   render() {
+    const goodInventory = this.state.goodInventory;
+    const badInventory = this.state.badInventory;
     return (
       <View style={style.mainContainer}>
         <RNCamera
@@ -431,8 +424,8 @@ class InGame extends React.Component {
               <InventoryModal
                 onPress={this.closeInventory}
                 images={this.state.inventoryImages}
-                goodInventory={this.state.goodInventory}
-                badInventory={this.state.badInventory}
+                goodInventory={goodInventory}
+                badInventory={badInventory}
               />
             </Modal>
           )}
@@ -440,12 +433,12 @@ class InGame extends React.Component {
             <Modal testID={'modal'} isVisible={this.state.scoreModalVisible}>
               <ScoreModal
                 onPress={this.closeScore}
-                goodObjects={this.state.goodInventory.length}
-                badObjects={this.state.badInventory.length}
+                goodObjects={goodInventory.length}
+                badObjects={badInventory.length}
                 missingObjects={
                   this.props.mission === 'solaire'
-                    ? 8 - this.state.goodInventory.length
-                    : 6 - this.state.goodInventory.length
+                    ? 8 - goodInventory.length
+                    : 6 - goodInventory.length
                 }
                 BadObjectslist={this.state.badObjects}
               />

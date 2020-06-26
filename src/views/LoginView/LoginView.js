@@ -36,7 +36,6 @@ class LoginView extends React.Component {
 
   render() {
     const {navigate} = this.props.navigation;
-    const userPseudo = this.props.userPseudo;
     const mission = this.props.mission;
 
     return (

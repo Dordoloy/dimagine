@@ -23,8 +23,7 @@ class Timer extends React.Component {
   };
 
   updateTimerBar = () => {
-    let newWidthTimerBar = (this.state.timer / this.props.maxTime) * 100 + '%';
-    return newWidthTimerBar;
+    return (this.state.timer / this.props.maxTime) * 100 + '%';
   };
 
   timerToTime = () => {
@@ -38,8 +37,7 @@ class Timer extends React.Component {
     minutes = minutes < 10 ? '0' + minutes : minutes;
     seconds = seconds < 10 ? '0' + seconds : seconds;
 
-    let time = minutes + ':' + seconds;
-    return time;
+    return minutes + ':' + seconds;
   };
 
   render() {

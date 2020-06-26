@@ -137,12 +137,6 @@ class RoomList extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    // userPseudo: state.userPseudo,
-  };
-};
-
 const mapDispatchToProps = dispatch => {
   return {
     dispatch: action => {
@@ -151,7 +145,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(RoomList);
+export default connect(mapDispatchToProps)(RoomList);

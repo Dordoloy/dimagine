@@ -16,12 +16,6 @@ export default function appReducer(state = initialState, action) {
         userPseudo: action.value,
       };
       return nextState;
-    case 'LOADED_APP':
-      nextState = {
-        ...state,
-        loaded: action.value,
-      };
-      return nextState;
     case 'SCORE':
       nextState = {
         ...state,

@@ -1,11 +1,4 @@
-import {
-  Text,
-  Image,
-  TextInput,
-  TouchableOpacity,
-  View,
-  Alert,
-} from 'react-native';
+import {Text, Image, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import style from './style';
 import {RNCamera} from 'react-native-camera';
@@ -108,12 +101,6 @@ class RoomView extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  return {
-    // userPseudo: state.userPseudo,
-  };
-};
-
 const mapDispatchToProps = dispatch => {
   return {
     dispatch: action => {
@@ -122,7 +109,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(RoomView);
+export default connect(mapDispatchToProps)(RoomView);

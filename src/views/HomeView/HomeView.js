@@ -5,13 +5,7 @@ import {ActivityIndicator} from 'react-native';
 import style from './style';
 import {connect} from 'react-redux';
 import {playGoSound, playRetrySound, playSwitchSound} from '../../Sounds';
-import {
-  socket,
-  onOpen,
-  getList,
-  subscribeRoom,
-  doMessage,
-} from '_components/Socket/Socket';
+import {socket} from '_components/Socket/Socket';
 import RulesModal from '../../components/RulesModal/RulesModal';
 
 function HomeView({navigation, dispatch}) {

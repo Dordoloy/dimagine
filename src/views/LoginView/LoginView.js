@@ -69,8 +69,9 @@ class LoginView extends React.Component {
               <TextInput
                 style={style.pseudoInput}
                 onChangeText={pseudo => this.togglePseudo(pseudo)}
+                value={this.state.pseudoUser}
               />
-              {userPseudo !== '' ? (
+              {this.state.pseudoUser !== '' ? (
                 <TouchableOpacity
                   style={style.validateButton}
                   onPress={() => {

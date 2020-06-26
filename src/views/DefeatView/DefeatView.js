@@ -4,7 +4,7 @@ import style from './style';
 import {RNCamera} from 'react-native-camera';
 import Timer from '../../components/Timer/Timer';
 import {connect} from 'react-redux';
-import {playLoseSound, playRetrySound} from '../../Sounds';
+import {playRetrySound} from '../../Sounds';
 
 class DefeatView extends React.Component {
   constructor(props) {
@@ -14,7 +14,6 @@ class DefeatView extends React.Component {
     const {navigate} = this.props.navigation;
     return (
       <View style={style.mainContainer}>
-        {playLoseSound()}
         <RNCamera
           style={style.backgroundCamera}
           type={RNCamera.Constants.Type.back}

@@ -44,6 +44,7 @@ class InGame extends React.Component {
       scoreModalVisible: false,
       timer: TIMER_BASE,
       victory: false,
+      defeat: false,
       goodObject: 0,
       oldGoodObjects: 0,
       goodInventory: [],
@@ -75,11 +76,12 @@ class InGame extends React.Component {
     const {navigate} = this.props.navigation;
     setInterval(() => {
       if (this.timerRef.current) {
-        if (!this.state.victory) {
+        if (!this.state.victory && !this.state.defeat) {
           this.setState({timer: this.timerRef.current.timerToTime()});
           this.incrementScore(-1);
         }
         if (this.state.timer === '00:00' && !this.state.victory) {
+          this.state.defeat = true;
           navigate('DefeatView');
         }
       }

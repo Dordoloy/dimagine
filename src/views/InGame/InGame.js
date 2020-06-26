@@ -174,7 +174,7 @@ class InGame extends React.Component {
         'Taser',
         'NfcScanBorne',
       ];
-
+      let goodLength = 6;
       let badMessageName = ['Arduino', 'LED', 'Taser', 'NfcScanBorne'];
 
       if (this.props.mission === 'solaire') {
@@ -193,7 +193,7 @@ class InGame extends React.Component {
           'Taser',
           'NfcScanBorne',
         ];
-
+        goodLength = 8;
         badMessageName = ['Sedna', 'Eris', 'Charon', 'Taser', 'NfcScanBorne'];
       }
 
@@ -205,20 +205,41 @@ class InGame extends React.Component {
         const goodInventoryLength = this.state.goodInventory.length;
         const badInventoryLength = this.state.badInventory.length;
 
-        this.oldGoodObjects = goodInventoryLength;
+        // TODO: Score a retravailler
+        console.log('this.oldGoodObjects', this.oldGoodObjects);
+        console.log('goodInventoryLength', goodInventoryLength);
+        console.log('this.state.goodObject', this.state.goodObject);
+        console.log(
+          this.state.goodObject -
+            (this.state.countInventoryValidate !== 0 ? this.oldGoodObjects : 0),
+        );
         let addPoint =
           50 *
-          (goodInventoryLength -
+          (this.state.goodObject -
             (this.state.countInventoryValidate !== 0
-              ? this.oldGoodObjects
+              ? goodInventoryLength === this.state.goodObject
+                ? this.state.goodObject === goodLength
+                  ? this.state.goodObject -
+                    (this.state.goodObject - this.oldGoodObjects)
+                  : this.state.goodObject
+                : this.oldGoodObjects === goodLength
+                ? this.oldGoodObjects
+                : this.state.goodObject
               : 0));
+        console.log(addPoint);
         let removePoint =
           15 *
           (badInventoryLength +
             (messageName.length - badMessageName.length - goodInventoryLength));
-
+        console.log(removePoint);
+        this.oldGoodObjects = goodInventoryLength;
         this.state.countInventoryValidate += 1;
-        this.incrementScore(addPoint);
+        this.incrementScore(
+          (goodLength === 6 && this.state.increaseScore === 800) ||
+            (goodLength === 8 && this.state.increaseScore === 900)
+            ? 0
+            : addPoint,
+        );
         this.incrementScore(-removePoint);
 
         const {navigate} = this.props.navigation;

@@ -205,7 +205,7 @@ class InGame extends React.Component {
         const goodInventoryLength = this.state.goodInventory.length;
         const badInventoryLength = this.state.badInventory.length;
 
-        // TODO: Score a retravailler
+        // TODO: Rework score
         console.log('this.oldGoodObjects', this.oldGoodObjects);
         console.log('goodInventoryLength', goodInventoryLength);
         console.log('this.state.goodObject', this.state.goodObject);

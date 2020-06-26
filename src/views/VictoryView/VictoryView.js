@@ -32,7 +32,7 @@ class VictoryView extends React.Component {
           <View style={style.modalChoosePseudo}>
             <Text style={[style.modalTitle, style.modalLine]}>Score</Text>
             <Text style={[style.positivePoints, style.modalLine]}>
-              {+this.props.increaseScore}
+              +{this.props.increaseScore}
             </Text>
             <Text style={[style.negativePoints, style.modalLine]}>
               {this.props.decreaseScore}

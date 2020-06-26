@@ -9,8 +9,10 @@ type Props = {
 const RulesModal: React.FC<Props> = props => (
   <View style={style.content}>
     <Text style={style.contentTitle}>Règles</Text>
-    <Text style={style.contentTextList}>Bienvenue aventurier !</Text>
-    <Text style={style.contentTextList}>Ton objectif sera le suivant :</Text>
+    <View style={style.contentCentered}>
+      <Text style={style.contentTextList}>Bienvenue aventurier !</Text>
+      <Text style={style.contentTextList}>Ton objectif sera le suivant :</Text>
+    </View>
     <Text style={style.rulesText}>{props.message}</Text>
     <Text style={style.contentText}>
       Mais attention à ne pas scanner les mauvais objets au risque de perdre des

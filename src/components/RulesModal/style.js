@@ -10,11 +10,13 @@ export default StyleSheet.create({
   content: {
     backgroundColor: 'white',
     padding: 22,
-    alignItems: 'center',
     borderRadius: 4,
     borderColor: 'rgba(0, 0, 0, 0.1)',
     width: '90%',
     height: '90%',
+  },
+  contentCentered: {
+    alignItems: 'center',
   },
   contentTitle: {
     width: '100%',
@@ -37,15 +39,12 @@ export default StyleSheet.create({
   rulesTextList: {
     marginTop: '10%',
     fontSize: 15,
-    marginLeft: -50,
   },
   contentTextList: {
-    marginLeft: -25,
     marginTop: 5,
     fontSize: 15,
   },
   contentTextList2: {
-    marginLeft: -90,
     marginTop: 5,
     fontSize: 15,
   },

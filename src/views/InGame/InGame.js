@@ -427,6 +427,11 @@ class InGame extends React.Component {
                 onKeep={this.addToInventory()}
                 image={this.state.scanImage}
                 message={this.state.scanMessage}
+                title={
+                  this.props.mission === 'solaire'
+                    ? 'Planète trouvée !'
+                    : 'Composant trouvé !'
+                }
               />
             </Modal>
           )}

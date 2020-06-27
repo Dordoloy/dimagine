@@ -7,11 +7,12 @@ type Props = {
   onKeep: () => {},
   image: string,
   message: string,
+  title: string,
 };
 
 const ScanModal: React.FC<Props> = props => (
   <View style={style.content}>
-    <Text style={style.contentTitle}>Composant trouvé !</Text>
+    <Text style={style.contentTitle}>{props.title}</Text>
     <Text>{props.message}</Text>
     <Image
       source={{
